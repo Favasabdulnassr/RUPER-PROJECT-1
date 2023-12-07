@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OTP Page</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+	/* Custom Styles */
+	.otp-container {
+	  min-height: 800px; /* Increased height */
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	}
+	
+	.otp-card {
+	  width: 80%;
+	  max-width: 500px;
+	  padding: 50px;
+	}
+  
+	/* Add space between input and button */
+	.form-group {
+	  margin-bottom: 50px; /* Adjust this value as needed */
+	}
+  </style>
+  
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="otp-container">
+          <div class="card otp-card">
+            <div class="card-body">
+              <h3 class="card-title text-center">Enter OTP</h3>
+              <form id="otpForm" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="otpInput">OTP</label>
+                  <input type="text" class="form-control" id="otpInput" placeholder="Enter OTP" name="entered_otp" required>
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="text {% if message.tags == 'info' %}text-success{% else %}text-danger{% endif %}">{{message}}</div>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (optional, for certain Bootstrap functionalities) -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
