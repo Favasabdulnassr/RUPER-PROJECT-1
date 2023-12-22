@@ -24,8 +24,12 @@
     <link rel="stylesheet" href="{% static "assets/css/cs-skin-elastic.css" %}">
     <link rel="stylesheet" href="{% static "assets/css/lib/datatable/dataTables.bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "assets/css/style.css" %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
 
@@ -50,16 +54,16 @@
                         <a href=""><i class="menu-icon fa fa-shopping-cart"></i>Orders</a>                      
                     </li>
                     <li {% block content3 %}{%endblock%}>
-                        <a href="{% url 'productable' %}"><i class="menu-icon fa fa-list"></i>Products </a>                       
+                        <a href="{% url 'producttable' %}"><i class="menu-icon fa fa-list"></i>Products </a>                       
                     </li>
                     <li {% block content4 %}{%endblock%}>
                         <a href="{% url 'usertable' %}"><i class="menu-icon fa fa-group"></i>Users</a>                       
                     </li>
                     <li {% block content5 %}{%endblock%}>
-                        <a href=""><i class="menu-icon fa fa-th-large"></i>Categories</a>                        
+                        <a href="{% url 'categorytable' %}"><i class="menu-icon fa fa-th-large"></i>Categories</a>                        
                     </li>
                     <li {% block content6 %}{%endblock%}>
-                        <a href=""><i class="menu-icon fa fa-code-fork"></i>Brands</a>                      
+                        <a href="{% url 'brandtable' %}"><i class="menu-icon fa fa-code-fork"></i>Brands</a>                      
                     </li>
                     <li {% block content8 %}{%endblock%}>
                         <a href=""><i class="menu-icon fa fa-gift"></i>Coupons</a>                     
@@ -242,9 +246,7 @@
                         {% comment %} <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="user-avatar rounded-circle" src="{% static "images/admin.jpg" %}" alt="User Avatar">
                         </a> {% endcomment %}
-                        <a class="nav-link" href="{% url 'logoutadmin
-                        ' %}"><i class="fa fa-power-off"></i>Logout</a>
-f
+                        <a class="nav-link" href="{% url 'logoutadmin'%}"><i class="fa fa-power-off"></i>Logout</a>
                         <div class="user-menu dropdown-menu">
                             {% comment %} <a class="nav-link" href="#"><i class="fa fa-user"></i>My Profile</a>
 

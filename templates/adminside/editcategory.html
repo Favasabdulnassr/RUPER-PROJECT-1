@@ -1,0 +1,26 @@
+{% extends 'adminside/baseadmin.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Edit Category</strong>
+        </div>
+        <div class="card-body">
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="category_name">Category Name:</label>
+                    <input type="text" id="category_name" name="category_name" class="form-control" value="{{ category.name }}" required>
+                </div>
+                <!-- Add other fields as needed -->
+
+                <button type="submit" class="btn btn-primary">Update Category</button>
+            </form>
+        </div>
+    </div> 
+</div>
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends 'adminside/baseadmin.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Edit Brand</strong>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="brand_name">Brand Name:</label>
+                    <input type="text" class="form-control" id="brand_name" name="brand_name" value="{{ brand.name }}" required>
+                </div>
+                <!-- Add other fields for brand details as needed -->
+
+                <button type="submit" class="btn btn-primary">Update Brand</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

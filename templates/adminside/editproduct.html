@@ -1,0 +1,63 @@
+{% extends 'adminside/baseadmin.html' %}
+{% load static %}
+
+{% block content%}
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Add Product</strong>
+        </div>
+        <div class="card-body">
+            <form method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="product_name">Product Name</label>
+                    <input type="text" class="form-control" id="product_name" name="product_name" value='{{prod.products_name}}' required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-control" id="category" name="category" required>
+                        
+                        {%for i in cat %}
+                        {%if product.category_id == i.name %}
+                        <option value="{{i.id}}" selected>{{i.name}}</option>
+                        {%else%}
+                        <option value="{{i.id}}">{{i.name}}</option>
+                        {%endif%}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brand">Brand</label>
+                    <select class="form-control" id="brand" name="brand" required>
+                        
+                        {%for i in bran %}
+                        {% if prod.brand_id == i.name %}
+                        <option value="{{i.id}}" selected>{{i.name}}</option>
+                        {%else%}
+                        <option value="{{i.id}}">{{i.name}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="text" class="form-control" id="price" name="price" value = '{{prod.price}}' required>
+                </div>
+                <div class="form-group">
+                    <label for="stock">Stock</label>
+                    <input type="text" class="form-control" id="stock" name="stock" value = '{{prod.stock}}' required>
+                </div>
+                <div class="form-group">
+                    <label for="product_image">Product Image</label>
+                    <input type="file" class="form-control-file" id="product_image" name="product_image" accept="image/*">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Edit Product</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

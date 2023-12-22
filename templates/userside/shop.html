@@ -33,13 +33,11 @@
                                                     <a href="shop-grid-left.html">Bed & Bat <span class="count">9</span></a>
                                                 </li> {% endcomment %}
                                                 <li>
-                                                    <a href="shop-grid-left.html">All Categories
-                                                        {% comment %} <span class="count">{{category.item_count}}</span> {% endcomment %}
-                                                    </a>
+                                                    <a href="../../shop?categoryy=0">All Categories</a>                                                    </a>
                                                 </li>
                                                 {% for category in categories %}
                                                 <li>
-                                                    <a href="shop-grid-left.html">{{ category.name }}
+                                                    <a href="../../shop?categoryy={{category.id}}">{{ category.name }}
                                                         {% comment %} <span class="count">{{category.item_count}}</span> {% endcomment %}
                                                     </a>
                                                 </li>
@@ -208,7 +206,7 @@
                                                                 <div class="hot">Hot</div>
                                                             </div>
                                                             <div class="product-thumb-hover">
-                                                                <a href="shop-details.html">
+                                                                <a href="../../shopdetails/{{product.id}}">
                                                                     <img width="600" height="600" src="{{product.image_set.first.image.url}}" class="post-image" alt="">
                                                                     <img width="600" height="600" src="{{product.image_set.first.image.url}}" class="hover-image back" alt="">
                                                                 </a>
@@ -230,7 +228,7 @@
                                                         </div>
                                                         <div class="products-content">
                                                             <div class="contents text-center">
-                                                                <h3 class="product-title"><a href="shop-details.html">{{product.products_name}}</a></h3>
+                                                                <h3 class="product-title"><a href=>{{product.products_name}}</a></h3>
                                                                 <span class="price">₹{{product.price}}</span>
                                                             </div>
                                                         </div>

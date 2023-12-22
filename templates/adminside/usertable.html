@@ -16,20 +16,26 @@
                         <th>email</th>
                         <th>phone</th>
                         <th>date_of_join</th>
-                        <th>Action</th> <!-- New column for Action -->
+                        <th>Action</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     {% for user in users %}
                     <tr>
-                        <td>{{user.username}}</td>
+                        <td>{{user.first_name}}</td>
                         <td>{{user.email}}</td>
                         <td>{{user.phone_number}}</td>
                         <td>{{user.date_of_join}}</td>
+                        {% if user.is_listed %}
                         <td>
-                           <a class="btn btn-danger">Block</a>
+                            <a href="../../user_status/{{user.id}}"><button class="badge badge-danger">Unlist</button></a>
                         </td>
+                        {%else%}
+                        <td>
+                            <a href="../../user_status/{{user.id}}"><button class="badge badge-success">List</button></a>
+                        </td>
+                        {%endif%}
                     </tr>
                     {% endfor %}
 

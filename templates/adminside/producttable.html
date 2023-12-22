@@ -1,0 +1,71 @@
+{% extends 'adminside/baseadmin.html' %}
+{% load static %}
+{% block content3 %}class='active'{%endblock%}
+{% block content%}
+
+<div class="col-md-12">
+    {% comment %} <div class="card"> {% endcomment %}
+        {% comment %} <div class="card-header">
+            <strong class="card-title">Data Table</strong>
+        </div> {% endcomment %}
+        <div class="card-body">
+            <div class="mb-2">
+                <a href="{% url 'addproduct' %}" class="btn btn-primary">Add Product</a>
+            </div>
+            <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>brand</th>
+                        <th>price</th>
+                        <th>stock</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>
+                            <img src="{{ product.image_set.first.image.url }}" alt="{{ product.products_name }}" style="max-width: 100px; max-height: 100px;">
+                        </td>
+                        <td>{{product.products_name}}</td>
+                        <td>{{product.category_id}}</td>
+                        <td>{{product.brand_id}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.stock}}</td>
+                        {% if product.is_listed %}
+                        <td>
+                            <a href="../../product_status/{{product.id}}"><button class="badge badge-danger">Unlist</button></a>
+                        </td>
+                        {%else%}
+                        <td>
+                            <a href="../../product_status/{{product.id}}"><button class="badge badge-success">List</button></a>
+                        </td>
+                        {%endif%}
+
+                        <td class='row'>
+                            <form method="post" action="{% url 'deleteproduct' id=product.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger mr-1">Delete</button>
+                            </form>
+                      
+                            <a href="../../editproduct/{{product.id}}"><i class="fa fa-pencil ml-3"></i></a>
+
+                        </td>
+                        <td></td>
+
+                    </tr>
+
+                    {% endfor %}
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content%}

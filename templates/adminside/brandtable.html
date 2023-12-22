@@ -1,6 +1,6 @@
 {% extends 'adminside/baseadmin.html' %}
 {% load static %}
-
+{% block content6 %}class='active'{%endblock%}
 {% block content %}
 
 <div class="col-md-12">
@@ -9,6 +9,9 @@
             <strong class="card-title">Data Table</strong>
         </div> {% endcomment %}
         <div class="card-body">
+            <div class="mb-2">
+                <a href="{% url 'addbrand' %}" class="btn btn-primary">Add Brand</a>
+            </div>
             <table id="bootstrap-data-table" class="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -21,24 +24,33 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for brand in brands %}
                     <tr>
-                        <td>Tiger Nixon</td>
-                        <td>System Architect</td>
+                        <td>{{ brand.id }}</td>
+                        <td>{{ brand.name }}</td>
+                        {% if brand.is_listed %}
                         <td>
-                           <a class="btn btn-danger">List</a>
+                            <a href="../../brand_status/{{brand.id}}"><button class="badge badge-danger">Unlist</button></a>
                         </td>
-                        <td>Edinburgh</td>
-                    </tr>
-
-                    <tr>
-                        <td>Tiger Nixon</td>
-                        <td>System Architect</td>
+                        {%else%}
                         <td>
-                           <a class="btn btn-success">UnList</a>
+                            <a href="../../brand_status/{{brand.id}}"><button class="badge badge-success">List</button></a>
                         </td>
-                        <td>Edinburgh</td>
+                        {%endif%}
+                        <td class='row'>
+                            <form method="post" action="{% url 'deletebrand' id=brand.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger mr-1">Delete</button>
+                            </form>
+                      
+                            <a href="../../editbrand/{{brand.id}}"><i class="fa fa-pencil ml-3"></i></a>
 
-                    </tr>
+                        </td>   
+                    </tr>                    
+
+                    {% endfor %}
+
+                 
                   
                 </tbody>
             </table>

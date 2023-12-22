@@ -7,55 +7,47 @@ from products.models import *
 # Create your views here.
 
 
-def Home(request):
-    if request.user.is_authenticated:
-        return render(request, 'userside/home1.html')
-    return render(request,'userside/home.html')
+
 
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
         return redirect('home')
     else:
-        return render(request,'userside/home1.html')
+        return render(request,'userside/home.html')
 
 def login(request):
     if request.user.is_authenticated:
-        return render(request,'userside/home1.html')
+        return render(request,'userside/home.html')
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
+        user = authenticate(request, username=email, password=password)
+        if user is not None and user.is_listed == True:
             auth_login(request,user)
-            return redirect('home1')
+            print('em')
+            return redirect('home')
         
         else:
             messages.error(request, "invalid password or username") 
+            print('password error')
             return render(request, "userside/home.html") 
+          
     else:
-        return render(request, "userside/home.html")          
+        print(' error')
+        return render(request, "userside/home.html")   
+               
 
-def Home1(request):
-    if request.user.is_authenticated:
-        return render(request,'userside/home1.html')
-    else:
-        return redirect('home')
 
 def signup(request):
     if request.method == "POST":
-        username = request.POST.get('username1')
+        first_name = request.POST.get('first_name')
         email = request.POST.get('email1')
         phone_number = request.POST.get('phone1')
         password = request.POST.get('password1')
     
-        if CustomUser.objects.filter(username=username).exists():
-            messages.error(request, 'username already exists')
-            print('username already exists')
-            return render(request,'userside/signup.html',{'messages': messages.get_messages(request)})
         
-        
-        elif CustomUser.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "email is already exists")
             print('email error')
             return render(request,'userside/signup.html',{'messages': messages.get_messages(request)})
@@ -65,10 +57,10 @@ def signup(request):
             return render(request,'userside/signup.html',{'messages': messages.get_messages(request)})
         
         else:
-            user = CustomUser.objects.create_user(username=username, email=email, phone_number=phone_number, password=password)
+            user = CustomUser.objects.create_user(username=email,first_name=first_name,email=email, phone_number=phone_number, password=password)
             messages.info(request, "User created successfully")
             print('sucess')
-            return redirect('otp_verification', username=username)
+            return redirect('otp_verification', username=email)
     else:
         return render(request, 'userside/signup.html')    
     
@@ -94,37 +86,3 @@ def otp_verification(request, username):
     else:
         return render(request, 'userside/otp_verification.html')
     
-def shop(request):
-    products = Products.objects.all()
-    categories = Category.objects.all()
-    # for category in categories:
-    #     category.item_count = category.count()
-    brands = Brands.objects.all()
-
-    context = {
-             'products': products,
-             'categories' : categories,
-             'brand' : brands
-    }
-    return render(request,'userside/shop.html',context)
-
-def contact(request):
-    return render(request,'userside/contact.html')    
-
-def myaccount(request):
-    return render(request,'userside/myaccount.html')
-
-def aboutus(request):
-    return render(request, 'userside/aboutus.html')
-
-def wishlist(request):
-    return render(request, 'userside/wishlist.html')
-
-def cart(request):
-    return render(request, 'userside/cart.html')
-
-def checkout(request):
-    return render(request, 'userside/checkout.html')
-
-def shopdetails(request):
-    return render(request, 'userside/shopdetails.html')

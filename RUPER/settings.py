@@ -49,6 +49,10 @@ INSTALLED_APPS = [
     'userAuthentication',
     'adminPanel',
     'products',
+    'users_home',
+    'cart',
+    
+
 ]
 
 MIDDLEWARE = [
@@ -134,7 +138,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-STATIFILES_DIR = [
+STATICFILES_DIR = [
     os.path.join(BASE_DIR,'userAuthentication/static'),
     os.path.join(BASE_DIR,'adminPanel/static')
 

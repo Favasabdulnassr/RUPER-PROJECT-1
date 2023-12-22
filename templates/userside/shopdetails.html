@@ -3,19 +3,20 @@
 {% block content1%} My Account {% endblock content1 %}
 {% block content %}
 <div id="site-main" class="site-main">
+
     <div id="main-content" class="main-content">
         <div id="primary" class="content-area">
             <div id="title" class="page-title">
                 <div class="section-container">
                     <div class="content-title-heading">
                         <h1 class="text-title-heading">
-                            Bora Armchair
+                            {{products.products_name}}
                         </h1>
-                    </div>
+                    {% comment %} </div>
                     <div class="breadcrumbs">
                         <a href="index.html">Home</a><span class="delimiter"></span><a href="shop-grid-left.html">Shop</a><span class="delimiter"></span>Bora Armchair
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
 
             <div id="content" class="site-content" role="main">
@@ -26,7 +27,7 @@
                                 <div class="row">
                                     <div class="product-images col-lg-7 col-md-12 col-12">
                                         <div class="row">
-                                            <div class="col-md-2">
+                                            {% comment %} <div class="col-md-2">
                                                 <div class="content-thumbnail-scroll">
                                                     <div class="image-thumbnail slick-carousel slick-vertical" data-asnavfor=".image-additional" data-centermode="true" data-focusonselect="true" data-columns4="5" data-columns3="4" data-columns2="4" data-columns1="4" data-columns="4" data-nav="true" data-vertical="&quot;true&quot;" data-verticalswiping="&quot;true&quot;">
                                                         <div class="img-item slick-slide">
@@ -56,25 +57,27 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> {% endcomment %}
                                             <div class="col-md-10">
                                                 <div class="scroll-image main-image">
                                                     <div class="image-additional slick-carousel" data-asnavfor=".image-thumbnail" data-fade="true" data-columns4="1" data-columns3="1" data-columns2="1" data-columns1="1" data-columns="1" data-nav="true">
+                                                        {% for image in products.image_set.all%}
                                                         <div class="img-item slick-slide">
-                                                            <img width="900" height="900" src="{% static "media/product/9.jpg" %}" alt="" title="">
+                                                            <img width="900" height="900" src="{{image.image.url}}" alt="" title="">
                                                         </div>
-                                                        <div class="img-item slick-slide">
+                                                        {% comment %} <div class="img-item slick-slide">
                                                             <img width="900" height="900" src="{% static "media/product/9-2.jpg" %}" alt="" title="">
-                                                        </div>
-                                                        <div class="img-item slick-slide">
+                                                        </div> {% endcomment %}
+                                                        {% comment %} <div class="img-item slick-slide">
                                                             <img width="900" height="900" src="{% static "media/product/9-3.jpg" %}" alt="" title="">
-                                                        </div>
-                                                        <div class="img-item slick-slide">
+                                                        </div> {% endcomment %}
+                                                        {% comment %} <div class="img-item slick-slide">
                                                             <img width="900" height="900" src="{% static "media/product/9.jpg" %}" alt="" title="">
-                                                        </div>
-                                                        <div class="img-item slick-slide">
+                                                        </div> {% endcomment %}
+                                                        {% comment %} <div class="img-item slick-slide">
                                                             <img width="900" height="900" src="{% static "media/product/9-2.jpg" %}" alt="" title="">
-                                                        </div>
+                                                        </div> {% endcomment %}
+                                                        {% endfor %}
                                                     </div>
                                                 </div>
                                             </div>
@@ -82,10 +85,10 @@
                                     </div>
 
                                     <div class="product-info col-lg-5 col-md-12 col-12 ">
-                                        <h1 class="title">Bora Armchair</h1>
+                                        <h1 class="title">{{products.products_name}}</h1>
                                         <span class="price">
-                                            <del aria-hidden="true"><span>$100.00</span></del> 
-                                            <ins><span>$90.00</span></ins>
+                                            {% comment %} <del aria-hidden="true"><span>$100.00</span></del>  {% endcomment %}
+                                            <ins><span>{{products.price}}</span></ins>
                                         </span>
                                         <div class="rating">
                                             <div class="star star-5"></div>
@@ -479,6 +482,8 @@
                 </div>
             </div><!-- #content -->
         </div><!-- #primary -->
+        
+
     </div><!-- #main-content -->
 </div>
 
