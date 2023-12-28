@@ -24,7 +24,7 @@ class Products(models.Model):
     stock = models.PositiveIntegerField()
     brand_id = models.ForeignKey(Brands,on_delete=models.CASCADE)
     is_listed = models.BooleanField(default=True)
-    colour = models.CharField(max_length=50)
+  
 
     def __str__(self):
         return self.products_name

@@ -37,9 +37,6 @@ def aboutus(request):
 def wishlist(request):
     return render(request, 'userside/wishlist.html')
 
-def cart(request):
-    return render(request, 'userside/cart.html')
-
 def checkout(request):
     return render(request, 'userside/checkout.html')
 

@@ -60,7 +60,7 @@ def addproduct(request):
         image = request.FILES.getlist('product_image')
         c=Category.objects.filter(id=category).first()
         b=Brands.objects.filter(id=brand).first()
-        products = Products(products_name=product, category_id=c,brand_id=b, price=price, quantity=stock)
+        products = Products(products_name=product, category_id=c,brand_id=b, price=price, stock=stock)
         products.save()
         for i in image:
             images = Image(product_id=products,image=i)
@@ -86,7 +86,7 @@ def editproduct(request,id):
         image = request.FILES.getlist('product_image')
         c=Category.objects.filter(id=category).first()
         b=Brands.objects.filter(id=brand).first()
-        products = Products(id=id,products_name=product, category_id=c,brand_id=b, price=price, quantity=stock)
+        products = Products(id=id,products_name=product, category_id=c,brand_id=b, price=price, stock=stock)
         products.save()
         if image:
             p=Image.objects.filter(product_id=id)

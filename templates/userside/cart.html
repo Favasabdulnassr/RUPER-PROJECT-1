@@ -18,19 +18,26 @@
                     </div>
                 </div>
             </div>
-
+             
             <div id="content" class="site-content" role="main">
                 <div class="section-padding">
                     <div class="section-container p-l-r">
+                       
+
                         <div class="shop-cart">	
                             <div class="row">
                                 <div class="col-xl-8 col-lg-12 col-md-12 col-12">
+                                   
                                     <form class="cart-form" action="#" method="post">
+                                        {% csrf_token %}
+                                      
                                         <div class="table-responsive">
+                                            
                                             <table class="cart-items table" cellspacing="0">
+                                              
                                                 <thead>
                                                     <tr>
-                                                        <th class="product-thumbnail">Product</th>
+                                                        <th class="product-thumbnail">product</th>
                                                         <th class="product-price">Price</th>
                                                         <th class="product-quantity">Quantity</th>
                                                         <th class="product-subtotal">Subtotal</th>
@@ -38,58 +45,36 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr class="cart-item">		
+                                                    {% for i in cart_item %}
+                                                    <tr class="cart-item">	
                                                         <td class="product-thumbnail">
                                                             <a href="shop-details.html">
-                                                                <img width="600" height="600" src="{% static "media/product/3.jpg" %}" class="product-image" alt="">
-                                                            </a>				
+                                                                <img width="600" height="600" src="{{i.product.image_set.first.image.url}}" class="product-image" alt="">
+                                                            </a>
+                                                            					
                                                             <div class="product-name">
-                                                                <a href="shop-details.html">Chair Oak Matt Lacquered</a>								
+                                                                <a href="shop-details.html">{{i.product.products_name}}</a>								
                                                             </div>
                                                         </td>
+                                                      
                                                         <td class="product-price">
-                                                            <span class="price">$150.00</span>
+                                                            <span class="price">${{i.product.price}}</span>
                                                         </td>
                                                         <td class="product-quantity">
-                                                            <div class="quantity">
-                                                                <button type="button" class="minus">-</button>	
-                                                                <input type="number" class="qty" step="1" min="0" max="" name="quantity" value="2" title="Qty" size="4" placeholder="" inputmode="numeric" autocomplete="off">
-                                                                <button type="button" class="plus">+</button>
+                                                            <div class="quantity d-flex justify-content-between border border-1">
+                                                                <button type="button" class="minus" onclick="cartQuantity(-1, {{ i.id }}, '{{ i.quantity }}')">-</button>	
+                                                                <span class="num-{{i.id}}">{{i.quantity}}</span>
+                                                                <button type="button" class="plus" onclick="cartQuantity(1, {{ i.id }}, '{{ i.quantity }}')" >+</button>
                                                             </div>
                                                         </td>
-                                                        <td class="product-subtotal">
-                                                            <span>$300.00</span>
+                                                        <td class="product-subtotal-{{i.id}}">
+                                                            <span>{{i.cart_price}}</span>
                                                         </td>
                                                         <td class="product-remove">
-                                                            <a href="#" class="remove">×</a>								
+                                                            <h3><button type="button" class="button_1 ms-3 border-0"  onclick="confirmDelete(this)" data-item-id="{{ i.id }}" href="#">remove</button></h3>
                                                         </td>
                                                     </tr>
-                                                    <tr class="cart-item">		
-                                                        <td class="product-thumbnail">
-                                                            <a href="shop-details.html">
-                                                                <img width="600" height="600" src="{% static "media/product/1.jpg" %}" class="product-image" alt="">
-                                                            </a>				
-                                                            <div class="product-name">
-                                                                <a href="shop-details.html">Zunkel Schwarz</a>								
-                                                            </div>
-                                                        </td>
-                                                        <td class="product-price">
-                                                            <span>$180.00</span>
-                                                        </td>
-                                                        <td class="product-quantity">
-                                                            <div class="quantity">
-                                                                <button type="button" class="minus">-</button>	
-                                                                <input type="number" class="qty" step="1" min="0" max="" name="quantity" value="1" title="Qty" size="4" placeholder="" inputmode="numeric" autocomplete="off">
-                                                                <button type="button" class="plus">+</button>
-                                                            </div>
-                                                        </td>
-                                                        <td class="product-subtotal">
-                                                            <span class="price">$180.00</span>
-                                                        </td>
-                                                        <td class="product-remove">
-                                                            <a href="#" class="remove">×</a>								
-                                                        </td>
-                                                    </tr>
+                                                    {% endfor %} 
                                                     <tr>
                                                         <td colspan="6" class="actions">
                                                             <div class="bottom-cart">
@@ -102,64 +87,150 @@
                                                             </div>	
                                                         </td>
                                                     </tr>
+                                                 
                                                 </tbody>
+                                              
                                             </table>
+                                           
                                         </div>
                                     </form>
+                                   
                                 </div>
+
+                              
+
                                 <div class="col-xl-4 col-lg-12 col-md-12 col-12">
                                     <div class="cart-totals">
                                         <h2>Cart totals</h2>
-                                        <div>
-                                            <div class="cart-subtotal">
-                                                <div class="title">Subtotal</div>
-                                                <div><span>$480.00</span></div>
-                                            </div>
-                                            <div class="shipping-totals">
-                                                <div class="title">Shipping</div>
-                                                <div>
-                                                    <ul class="shipping-methods custom-radio">
-                                                        <li>
-                                                            <input type="radio" name="shipping_method" data-index="0" value="free_shipping" class="shipping_method" checked="checked"><label>Free shipping</label>
-                                                        </li>
-                                                        <li>
-                                                            <input type="radio" name="shipping_method" data-index="0" value="flat_rate" class="shipping_method"><label>Flat rate</label>					
-                                                        </li>
-                                                    </ul>
-                                                    <p class="shipping-desc">
-                                                        Shipping options will be updated during checkout.				
-                                                    </p>
-                                                </div>
-                                            </div>
                                             <div class="order-total">
                                                 <div class="title">Total</div>
-                                                <div><span>$480.00</span></div>
+                                                <div><span class="ord-total">{{total}}</span></div>
                                             </div>
-                                        </div>
                                         <div class="proceed-to-checkout">		
-                                            <a href="shop-checkout.html" class="checkout-button button">
+                                            <a href="../../checkout/{{cart_item.id}}" class="checkout-button button">
                                                 Proceed to checkout
                                             </a>
                                         </div>
                                     </div>
                                 </div>
+
+    
+
                             </div>
-                        </div>
-                        <div class="shop-cart-empty">
-                            <div class="notices-wrapper">
-                                <p class="cart-empty">Your cart is currently empty.</p>
-                            </div>	
-                            <div class="return-to-shop">
-                                <a class="button" href="shop-grid-left.html">
-                                    Return to shop		
-                                </a>
-                            </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div><!-- #content -->
         </div><!-- #primary -->
     </div><!-- #main-content -->
 </div>
+
+{% comment %} 
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <p style="font-size: 18px; margin-bottom: 10px;">Your cart is currently empty.</p>
+    <a href="shop-grid-left.html" style="text-decoration: none; background-color: #3498db; color: #fff; padding: 8px 16px; border-radius: 4px;">Return to shop</a>
+</div> {% endcomment %}
+
+
+
+{% block contentscript%}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function getCSRFToken() {
+     return document.querySelector('input[name=csrfmiddlewaretoken]').value;
+    }
+   
+    function cartQuantity(change, productId, quantity) {
+     var c = change
+     var p = productId
+     var e = quantity
+     console.log(c)
+     console.log(p)
+     console.log(e)
+     $.ajax({
+      url: '/updateCart',
+      type: 'POST',
+      encocded:true,
+      data:{
+       change: c,
+       productId: p,
+       quantity: e
+      },
+  
+      headers: {
+       'X-CSRFToken': getCSRFToken() // Include the CSRF token in the request header
+      },
+      success: function(data) {
+       // Handle the response from the server
+       console.log(data);
+   
+       // Update the displayed quantity based on the server response
+       var newQuantity = data.updatedQuantity;
+       var totalPrice = parseInt(data.prodTotal, 10);
+       var total = data.totalCartPrice;
+  
+       // Find the <span> element with class "num" and update its content
+        $(`.num-${productId}`).text(newQuantity);
+        $(`.product-subtotal-${productId}`).text(totalPrice);
+        $(`.ord-total`).text(total);
+
+      },
+      error: function(error) {
+       console.error('Error:', error);
+      }
+     });
+    }
+</script>  
+
+<!-- SweetAlert CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmDelete(button) {
+     const itemId = button.getAttribute('data-item-id');
+     Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#1d4289',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User confirmed the deletion, proceed with the AJAX request to remove the item
+        $.ajax({
+          type: 'POST',
+          url: '/item_remove',
+          data: {
+            item_id: itemId,
+            csrfmiddlewaretoken: getCookie('csrftoken')
+          },
+          success: function(data) {
+            console.log('Item removed successfully.');
+            location.reload(); // Reload the page
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error removing item:', errorThrown);
+          }
+        });
+      }
+    });
+  }
+  
+    
+    // Function to get the CSRF token from cookies
+    function getCookie(name) {
+     const value = `; ${document.cookie}`;
+     const parts = value.split(`; ${name}=`);
+     if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    
+</script>
+
+ {% endblock contentscript %}
+
 
 {% endblock content%}

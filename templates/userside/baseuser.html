@@ -1036,15 +1036,18 @@
 			</div>
 		</div>
 
-		<!-- Page Loader -->
+		{% comment %} <!-- Page Loader -->
 		<div class="page-preloader">
 	    	<div class="loader">
 	    		<div></div>
 	    		<div></div>
 	    	</div>
-	    </div>
+	    </div> {% endcomment %}
 
         <!-- Dependency Scripts -->
+		{% block contentscript%}
+		{% endblock contentscript%}
+        
         <script src="{% static 'libs/popper/js/popper.min.js' %}"></script>
         <script src="{% static 'libs/jquery/js/jquery.min.js' %}"></script>
         <script src="{% static 'libs/bootstrap/js/bootstrap.min.js' %}"></script>
@@ -1055,8 +1058,10 @@
         <script src="{% static "libs/slider/js/jquery.dependClass-0.1.js" %}"></script>
         <script src="{% static "libs/slider/js/draggable-0.1.js" %}"></script>
         <script src="{% static "libs/slider/js/jquery.slider.js" %}"></script>
-		{% block contentscript%}
-		{% endblock contentscript%}
+	
+		{% block contentscript1%}
+		
+		{% endblock contentscript1%}
         
             <!-- Site Scripts -->
         <script src="{% static 'js/app.js' %}"></script>

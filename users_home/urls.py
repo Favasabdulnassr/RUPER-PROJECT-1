@@ -9,7 +9,6 @@ path('contact/', views.contact, name='contact'),
 path('myaccount/', views.myaccount, name='myaccount'),
 path('aboutus/',views.aboutus, name='aboutus'),
 path('wishlist/',views.wishlist,name='wishlist'),
-path('cart/',views.cart, name='cart'),
 path('checkout/', views.checkout, name='checkout'),
 path('shopdetails/<str:id>',views.shopdetails, name='shopdetails')
 ]
