@@ -14,6 +14,8 @@
                 <div class="form-group">
                     <label for="product_name">Product Name</label>
                     <input type="text" class="form-control" id="product_name" name="product_name" value='{{prod.products_name}}' required>
+                    <span id="product_name_error" class="error" style="color: red;"></span>
+
                 </div>
                 <div class="form-group">
                     <label for="category">Category</label>
@@ -44,20 +46,80 @@
                 <div class="form-group">
                     <label for="price">Price</label>
                     <input type="text" class="form-control" id="price" name="price" value = '{{prod.price}}' required>
+                    <span id="price_error" class="error" style="color: red;"></span>
+
                 </div>
                 <div class="form-group">
                     <label for="stock">Stock</label>
                     <input type="text" class="form-control" id="stock" name="stock" value = '{{prod.stock}}' required>
+                    <span id="stock_error" class="error" style="color: red;"></span>
+
                 </div>
                 <div class="form-group">
                     <label for="product_image">Product Image</label>
                     <input type="file" class="form-control-file" id="product_image" name="product_image" accept="image/*" multiple>
+
                 </div>
 
                 <button type="submit" class="btn btn-primary">Edit Product</button>
-            </form>
+            </form> 
+
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="text {% if message.tags == 'info' %}text-success{% else %}text-danger{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var selectedFile = null; // Variable to store the selected file
+
+        $('#product_image').change(function() {
+            selectedFile = this.files[0]; // Update selected file when the input changes
+        });
+
+        $('form').submit(function(event) {
+            var productName = $('#product_name').val().trim(); // Trim whitespace from product name
+            var price = $('#price').val();
+            var stock = $('#stock').val();
+            var fileInput = $('#product_image');
+
+            // Reset any previous error messages
+            $('.error').text('');
+
+            // Validate product name (at least 4 characters, no spaces or numbers)
+            if (productName.length < 4 || !/^[a-zA-Z]+$/.test(productName) || /^\s+$/.test(productName)) {
+                $('#product_name_error').text('Product name should be at least 4 characters and contain only letters.');
+                event.preventDefault();
+                return;
+            }
+
+            // Validate price (numeric and greater than 0)
+            if (isNaN(price) || parseFloat(price) <= 0 || /\s/.test(price)) {
+                $('#price_error').text('Price should be a number and greater than 0.');
+                event.preventDefault();
+                return;
+            }
+
+            // Validate stock (numeric and not less than 0)
+            if (isNaN(stock) || parseInt(stock) < 0 || /\s/.test(stock)) {
+                $('#stock_error').text('Stock should be a number and not less than 0.');
+                event.preventDefault();
+                return;
+            }
+
+          
+        });
+    });
+</script>
 
 {% endblock %}

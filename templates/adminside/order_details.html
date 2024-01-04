@@ -1,0 +1,104 @@
+{% extends 'adminside/baseadmin.html' %}
+{% load static %}
+{% block content %}
+    {% comment %} <div class="content-wrapper "> {% endcomment %}
+      <div class="row">
+        <div class="mt-5 col-12 grid-margin mx-auto">
+          <div class="card mb-5">
+            <div class="card-body">
+              <div class="mb-5">
+                <ul class="navbar-nav w-100">
+                  <li class="nav-item w-100"></li>
+                </ul>
+              </div>
+              <div class="col-md-6 ms-3 mb-4" >
+                <h3><strong>View Order</strong></h3>
+              </div>
+              <nav>
+                <ol class="breadcrumb ms-4">
+                  <li class="breadcrumb-item">Admin</li>
+                  <li class="breadcrumb-item">Orders</li>
+                  <li class="breadcrumb-item active">View Orders</li>
+                </ol>
+              </nav>
+              <div class="table-responsive">
+                <div class="container-fluid d-flex flex-column justify-content-center">
+                  <div class="card col-12 my-3 mx-auto p-2" style="border: 0.2px solid #494949;">
+                    <div class="card-header d-flex justify-content-between w-100">
+                      <div class="d-flex flex-column">
+                        <p class="text-primary" ><strong>{{order.status}}</strong></p>
+                        <h6> Expected Delivery :<span style='font-size:15px;'><strong>{{order.order.expected_delivery_date}}</strong></span></h6>
+                      </div>
+                    </div>
+                    <hr class="m-0 mb-1">
+                   
+                    <div class="card-body row col-12 d-flex">
+                      <div class="col-md-4 col-12 mx-auto">
+                        <img class="mt-4 image-fluid" src="{{order.product.image_set.first.image.url}}"  alt="">
+                        <p class="card-text"></p>
+                        <!-- <a href="#" class="btn btn-dark">Go somewhere</a> -->
+                      </div>
+                      <div class="col-md-7 col-12">
+                        <h4 class="card-title"><strong>{{order.product.products_name}}</strong></h4>
+
+                        <p class="card-text">
+                            <p>Order ID: <b>{{order.order.order_id}}</b></p>
+                            <p>User : <b>{{order.order.user.first_name}}</b></p>
+                            <p>Quantity: <b>{{order.quantity}}</b></p>
+                          <p>Order Date: <b>{{order.order.order_date}}</b></p>
+                          <b>Payment Method: {{ order.order.payment_method }}</b>
+                        </p>
+                        <h5 class="card-title mb-2"><b>RS: {{ order.price }}</b></h5>
+                        <hr class="bg-secondary">
+                        <h5 class="card-title mb-3" style="font-size: 15px;"><strong>Shipping Address</strong></h5>
+                        <h6 class="card-text mb-3" style="font-size: 15px;"> <b>FULL NAME :</b> {{ order.order.address.name }}</h6>
+                        <p class="card-text"><b>Location:</b><br>
+                            {{order.order.address.street_address}},<br>
+                            {{order.order.address.city}},<br>
+                            {{order.order.address.state}},<br>
+                            {{order.order.address.pin_code}}
+                        <p class="card-text">PHONE: <b>{{order.order.address.phone_number}}</b></p>
+                        <hr class="bg-secondary">
+                        <h5 class="card-title mb-3" style="font-size: 15px;"><b>Change Order Status: </b></h5>
+                          <form method="POST" action="">
+                           {% csrf_token %}
+                          
+                          {% if order.status == 'Cancelled'  %}
+                            {% for i in statuses %}
+                            <input type="radio" id="radio{{forloop.counter}}" name="options" value="{{i}}" {%if i == order.status %}checked{%endif%} disabled>
+                            <label for="radio{{forloop.counter}}" >{{i}}</label>
+                            <br>
+                            {%endfor%}
+                          {% elif order.status == 'Delivered' %}
+                            {% for i in statuses %}
+                            <input type="radio" id="radio{{forloop.counter}}" name="options" value="{{i}}" {%if i == order.status %}checked{%endif%} >
+                            <label for="radio{{forloop.counter}}" >{{i}}</label>
+                            <br>
+                            {%endfor%}                             
+                          {% else %}
+                            {% for i in statuses %}
+                            <input type="radio" id="radio{{forloop.counter}}" name="options" value="{{i}}" {%if i == order.status %}checked{%endif%}>
+                            <label for="radio{{forloop.counter}}" >{{i}}</label>
+                            <br>
+                            {%endfor%}                             
+                        {% endif %}
+                          <button type='submit' class="btn btn-secondary border-0 mt-3">Change Status</button>
+                        </form>
+                          
+                          
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% comment %} </div> {% endcomment %}
+  </div>
+  
+  
+
+{% endblock %}

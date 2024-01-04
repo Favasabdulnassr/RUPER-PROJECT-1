@@ -9,4 +9,5 @@ class Cart(models.Model):
     quantity = models.PositiveBigIntegerField(null=False,blank=False,default=1)
     cart_price = models.PositiveBigIntegerField(default=1)
 
+   
     

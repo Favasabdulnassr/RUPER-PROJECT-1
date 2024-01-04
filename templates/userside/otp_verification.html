@@ -35,19 +35,26 @@
           <div class="card otp-card">
             <div class="card-body">
               <h3 class="card-title text-center">Enter OTP</h3>
-              <form id="otpForm" method="POST">
+              <form id="otpForm" action = "{% url 'otp_verification' %}" method="POST"  >
                 {% csrf_token %}
                 <div class="form-group">
                   <label for="otpInput">OTP</label>
                   <input type="text" class="form-control" id="otpInput" placeholder="Enter OTP" name="entered_otp" required>
-                  {% if messages %}
-                    {% for message in messages %}
-                      <div class="text {% if message.tags == 'info' %}text-success{% else %}text-danger{% endif %}">{{message}}</div>
-                    {% endfor %}
-                  {% endif %}
-                </div>
+                  <center><div class="text-danger">{% if messages %}{% for message in messages  %} {{message}} {% endfor %}{% endif %}</div></center>
                 <button type="submit" class="btn btn-primary btn-block">Submit</button>
               </form>
+
+              <div class="timeforotp d-flex justify-content-center">
+                <div id="countdown-timer" class="small" >
+                   <span id="timer"></span>
+                </div>
+                    
+                <div id="otp-expired-message"  class="small" style="display: none; color: red;">
+                    <a class="small text-dark pt-2" href="{% url 'send_otp' %}" id="resendlink">Resend OTP</a>
+                </div>
+            </div>    
+
+
             </div>
           </div>
         </div>
@@ -55,7 +62,48 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS (optional, for certain Bootstrap functionalities) -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var expirationTime = new Date("{{ expiration_time }}").getTime();
+    let remainingtime = $("#timer");
+    let resend = $("#resendlink");
+    function UpdateOTPTimer() {
+        var now = new Date().getTime(); 
+        var timeDifference = Math.max(0, Math.floor((expirationTime - now) / 1000));
+        console.log(timeDifference)
+        
+
+        if (timeDifference > 0) {
+            let minutes = Math.floor(timeDifference / 60);
+            let seconds = timeDifference % 60;
+
+            let timerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            remainingtime.text(timerText);
+            $("#otp-expired-message").hide(); // Hide the message container
+            remainingtime.show(); // Show the timer
+    
+        } else {
+            remainingtime.hide();
+            $("#otp-expired-message").show(); // Show the message container
+          }
+
+    }
+
+    UpdateOTPTimer();
+    setInterval(UpdateOTPTimer, 1000);
+
+    $(document).ready(function () {
+        $("form").on("submit", function (event) {
+            var enteredOTP = $("#otpInput").val();
+            var storedOTP = "{{ request.session.otp }}";
+
+            if (enteredOTP !== storedOTP) {
+                event.preventDefault();
+                $(".error").text("Invalid OTP. Please try again.");
+            }
+        });
+    });
+
+</script>

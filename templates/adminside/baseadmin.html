@@ -51,7 +51,7 @@
                         <a href=""><i class="menu-icon fa fa-file"></i>Reports</a>
                     </li>
                     <li {% block content2 %}{%endblock%}>
-                        <a href=""><i class="menu-icon fa fa-shopping-cart"></i>Orders</a>                      
+                        <a href="{% url 'orders' %}"><i class="menu-icon fa fa-shopping-cart"></i>Orders</a>                      
                     </li>
                     <li {% block content3 %}{%endblock%}>
                         <a href="{% url 'producttable' %}"><i class="menu-icon fa fa-list"></i>Products </a>                       

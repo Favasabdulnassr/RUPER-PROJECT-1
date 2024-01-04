@@ -71,11 +71,11 @@
                                                             <span>{{i.cart_price}}</span>
                                                         </td>
                                                         <td class="product-remove">
-                                                            <h3><button type="button" class="button_1 ms-3 border-0"  onclick="confirmDelete(this)" data-item-id="{{ i.id }}" href="#">remove</button></h3>
+                                                            <h6><button type="button" class="button_1 ms-3 border-0"  onclick="confirmDelete(this)" data-item-id="{{ i.id }}" href="#">Remove</button></h6>
                                                         </td>
                                                     </tr>
                                                     {% endfor %} 
-                                                    <tr>
+                                                    {% comment %} <tr>
                                                         <td colspan="6" class="actions">
                                                             <div class="bottom-cart">
                                                                 <div class="coupon">
@@ -86,7 +86,7 @@
                                                                 <button type="submit" name="update_cart" class="button" value="Update cart">Update cart</button>
                                                             </div>	
                                                         </td>
-                                                    </tr>
+                                                    </tr> {% endcomment %}
                                                  
                                                 </tbody>
                                               
@@ -175,6 +175,7 @@
         $(`.num-${productId}`).text(newQuantity);
         $(`.product-subtotal-${productId}`).text(totalPrice);
         $(`.ord-total`).text(total);
+        console.log(total)
 
       },
       error: function(error) {
@@ -192,7 +193,7 @@
      const itemId = button.getAttribute('data-item-id');
      Swal.fire({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: "You won't be able to revert this!",    
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',

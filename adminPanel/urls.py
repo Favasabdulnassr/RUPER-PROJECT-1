@@ -22,4 +22,6 @@ urlpatterns = [
     path('editbrand/<str:id>',views.editbrand,name='editbrand'),
     path('deletebrand/<str:id>',views.deletebrand,name='deletebrand'),
     path('brand_status/<str:id>',views.brand_status,name='brand_status'),
+    path('orders',views.orders,name='orders'),
+    path('order_details/<str:id>/',views.order_details,name='order_details')
 ]

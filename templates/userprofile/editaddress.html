@@ -1,0 +1,67 @@
+{% extends 'userside/baseuser.html' %}
+{% load static %}
+{% block content1%} Edit Account {% endblock content1 %}
+{% block content %}
+
+
+<div id="site-main" class="site-main">          
+    <div id="main-content" class="main-content">
+        <div id="primary" class="content-area">
+            <div class="tab-pane fade show active" id="addresses" role="tabpanel">
+                <div class="my-account-addresses">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8" style='margin-top: 160px;margin-bottom: 50px;'>
+                                <h1 class="text-center mb-5">Edit Address</h1>
+                                <!-- Address form -->
+                                <form method='post'>
+                                    <!-- Name -->
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{user_data.name}}">
+                                    </div>
+                                    
+                                    <!-- Phone -->
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Phone</label>
+                                        <input type="text" class="form-control" id="phone" name="phone" value="{{user_data.phone}}">
+                                    </div>
+                                    
+                                    <!-- Street Address -->
+                                    <div class="mb-3">
+                                        <label for="street_address" class="form-label">Street Address</label>
+                                        <input type="text" class="form-control" id="street_address" name="street_address" value="{{user_data.street_address}}">
+                                    </div>
+                                    
+                                    <!-- City -->
+                                    <div class="mb-3">
+                                        <label for="city" class="form-label">City</label>
+                                        <input type="text" class="form-control" id="city" name="city" value="{{user_data.city}}">
+                                    </div>
+                                    
+                                    <!-- State -->
+                                    <div class="mb-3">
+                                        <label for="state" class="form-label">State</label>
+                                        <input type="text" class="form-control" id="state" name="state" value="{{user_data.state}}">
+                                    </div>
+                                    
+                                    <!-- Pincode -->
+                                    <div class="mb-3">
+                                        <label for="pincode" class="form-label">Pincode</label>
+                                        <input type="text" class="form-control" id="pincode" name="pincode" value="{{user_data.pin_code}}">
+                                    </div>
+                                    
+                                    <!-- Submit button -->
+                                    <button type="submit" class="btn btn-primary">Update Address</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- #primary -->
+    </div><!-- #main-content -->
+</div>
+{% endblock content %}

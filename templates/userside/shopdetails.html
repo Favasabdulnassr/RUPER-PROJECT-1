@@ -75,9 +75,9 @@
                                                     </div>
 
                                                 </div>
-                                            <div class="btn-quick-buy" data-title="Wishlist">
+                                            {% comment %} <div class="btn-quick-buy" data-title="Wishlist">
                                                 <a href="#" class="product-btn">Buy It Now</a>
-                                            </div>
+                                            </div> {% endcomment %}
                                             <div class="btn-wishlist" data-title="Wishlist">
                                                 <a href="#" class="product-btn">Add to wishlist</a>
                                             </div>
@@ -143,7 +143,7 @@
                 alert("success")
             }
             else{
-                alert("Already in Cart")
+                alert("Already in Cart or stock is not available")
             }
             
         }).fail(() => {

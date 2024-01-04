@@ -9,11 +9,13 @@
             <strong class="card-title">Edit Brand</strong>
         </div>
         <div class="card-body">
-            <form method="post">
+            <form id="brandForm" method="post">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="brand_name">Brand Name:</label>
                     <input type="text" class="form-control" id="brand_name" name="brand_name" value="{{ brand.name }}" required>
+                    <small id="brandError" style="color: red;"></small>
+
                 </div>
                 <!-- Add other fields for brand details as needed -->
 
@@ -22,5 +24,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    function validateBrand(event) {
+        var brandName = document.getElementById("brand_name").value.trim();
+        var errorField = document.getElementById("brandError");
+
+        // Regular expression to match only letters and ensure length >= 3
+        var regex = /^[a-zA-Z]{4,}$/;
+
+        if (!regex.test(brandName.trim())) {
+            errorField.textContent = "Brand name should contain only letters and be at least four characters long.";
+            event.preventDefault(); // Prevent form submission
+            return false;
+        } else {
+            errorField.textContent = "";
+            return true;
+        }
+    }
+
+    // Attach the validation to the form submit event
+    document.getElementById("brandForm").addEventListener("submit", validateBrand);
+</script>
 
 {% endblock content %}

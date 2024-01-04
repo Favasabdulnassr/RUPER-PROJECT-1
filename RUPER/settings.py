@@ -51,8 +51,8 @@ INSTALLED_APPS = [
     'products',
     'users_home',
     'cart',
-    
-
+    'userprofile',
+    'order',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +152,5 @@ STATIC_ROOT = os.path.join(BASE_DIR,'assets')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'userAuthentication.CustomUser'
+
+LOGIN_URL = "home"

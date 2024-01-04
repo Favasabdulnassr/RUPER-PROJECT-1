@@ -7,12 +7,15 @@ from django.contrib.auth import authenticate,login, logout as auth_logout
 from django.views.decorators.cache import cache_control
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import user_passes_test
+from order.models import OrdersItem
+
+
 
 
 
 
 # Create your views here.
-@never_cache
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def adminlogin(request):
     if request.user.is_authenticated and request.user.is_superuser:
         return redirect('usertable')
@@ -32,12 +35,17 @@ def adminlogin(request):
   
     return render(request, 'adminside/adminlogin.html')
 
-@never_cache
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def logoutadmin(request):
     if request.user:
         auth_logout(request)
     return redirect('adminlogin')
 
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def usertable(request):
     if request.user.is_superuser:
         users = CustomUser.objects.exclude(is_superuser=True).all()
@@ -48,6 +56,10 @@ def usertable(request):
     else:
         return redirect('adminlogin')
     
+
+    
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def addproduct(request):
     cat=Category.objects.all()
     bran=Brands.objects.all()
@@ -73,6 +85,9 @@ def addproduct(request):
     return render(request,'adminside/addproduct.html',context)
     
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def editproduct(request,id):
     cat=Category.objects.all()
     bran=Brands.objects.all()
@@ -104,9 +119,8 @@ def editproduct(request,id):
 
 
 
-    
-    
-@never_cache
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")    
 def producttable(request):
     if request.user.is_superuser:
         products = Products.objects.all()
@@ -117,6 +131,10 @@ def producttable(request):
     else:
         return render(request,'adminside/adminlogin.html')
     
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def categorytable(request):
     if request.user:
         categories = Category.objects.all()
@@ -128,6 +146,9 @@ def categorytable(request):
         return render(request,'adminside/adminlogin.html')
     
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def brandtable(request):
     brands = Brands.objects.all()
     context = {
@@ -135,6 +156,9 @@ def brandtable(request):
     }
     return render(request, 'adminside/brandtable.html',context)
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def deleteproduct(request,id):
     if request.method == 'POST':
         products = Products.objects.get(id=id)
@@ -144,6 +168,9 @@ def deleteproduct(request,id):
         return render(request,'adminside/producttable.html')
     
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def product_status(request,id):
     product = Products.objects.filter(id=id).first()
     if product.is_listed == True:
@@ -153,8 +180,11 @@ def product_status(request,id):
     else:
         product.is_listed = True
         product.save()
-    return redirect('producttable')  
+    return redirect('producttable') 
+ 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def user_status(request,id):
     user = CustomUser.objects.filter(id=id).first()
     if user.is_listed == True:
@@ -165,17 +195,27 @@ def user_status(request,id):
         user.save()
     return redirect('usertable')     
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def addcategory(request):
     categories = Category.objects.all()
     if request.method == 'POST':
         id = request.POST.get('category_id')
         category_name = request.POST.get('category_name')
-        category = Category(id=id, name=category_name)
-        category.save()
-        return redirect('categorytable')
+
+        if Category.objects.filter(name__iexact=category_name).exists():
+            messages.error(request,'category already exists')
+            return redirect('addcategory')
+        else:
+            category = Category(id=id, name=category_name)
+            category.save()
+            return redirect('categorytable')
     else:
         return render(request,'adminside/addcategory.html')
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def editcategory(request,id):
     category = Category.objects.filter(id=id).first()
     if request.method == 'POST':
@@ -189,6 +229,8 @@ def editcategory(request,id):
         }
         return render(request,'adminside/editcategory.html',context)
     
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def deletecategory(request,id):
     if request.method == 'POST':
         category = Category.objects.get(id=id)
@@ -198,6 +240,8 @@ def deletecategory(request,id):
         return render(request,'adminside/categorytable.html')
     
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def category_status(request,id):
     category = Category.objects.filter(id=id).first()
     if category.is_listed == True:
@@ -208,17 +252,26 @@ def category_status(request,id):
         category.save()
     return redirect('categorytable')  
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def addbrand(request):
     if request.method == 'POST':
         id = request.POST.get('brand_id')
         brand_name = request.POST.get('brand_name')
-        brand = Brands(id=id, name=brand_name)
-        brand.save()
-    
-        return redirect('brandtable')
+        if Brands.objects.filter(name__iexact=brand_name).exists():
+            messages.error(request,'This brand already exists')
+            return redirect('addbrand')
+        else:
+            brand = Brands(id=id, name=brand_name)
+            brand.save()
+            return redirect('brandtable')
     else:
         return render(request,'adminside/addbrand.html')
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def editbrand(request,id):
     brand = Brands.objects.filter(id=id).first()
     if request.method == 'POST':
@@ -231,7 +284,10 @@ def editbrand(request,id):
                 'brand':brand
         }
         return render(request,'adminside/editbrand.html',context)
-    
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")  
 def deletebrand(request,id):
     if request.method == 'POST':
         brand = Brands.objects.filter(id=id)
@@ -239,7 +295,10 @@ def deletebrand(request,id):
         return redirect('brandtable')
     else:
         return render(request,'adminside/brandtable.html')   
+    
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def brand_status(request,id):
     brands = Brands.objects.filter(id=id).first()
     if brands.is_listed == True:
@@ -250,4 +309,26 @@ def brand_status(request,id):
         brands.save()
     return redirect('brandtable')      
 
-        
+
+#orders 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
+def orders(request):
+    order_items = OrdersItem.objects.all().order_by("-id")
+    return render(request,'adminside/orders.html',{"orders":order_items})
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
+def order_details(request,id):
+    order= OrdersItem.objects.filter(id=id).first()
+    if request.method == 'POST':
+         option = request.POST.get('options')
+         if option:
+            order.status = option
+            order.save()
+
+    statuses=['Order confirmed','Cancelled','Delivered']
+    return render(request,'adminside/order_details.html',{'order':order, 'statuses':statuses})
+

@@ -1,9 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render,redirect
 from django.http import JsonResponse,HttpResponse
 from .models import Cart
 from products.models import Products
 from decimal import Decimal
 from userAuthentication.models import CustomUser
+from userprofile.models import Address
+from django.contrib import messages
+
 
 def add_cart(request):
     if request.method == 'POST':
@@ -11,30 +14,33 @@ def add_cart(request):
         id = request.POST.get("id") 
         print(id)
         product = Products.objects.get(id = id)
-        
-        if Cart.objects.filter(customuser=request.user, product=product).exists():
-            return JsonResponse({'success': False})  
-        
-        # Create or update cart for the user
-        cart, created = Cart.objects.get_or_create(
-            customuser=request.user, product=product
-        )
-        price = product.price
-        cart.quantity = quantity
-        cart.cart_price = price * Decimal(quantity)
-        cart.save()
 
-        response_data = {
-            'success': True,
-            'message': 'Item added to cart successfully.'
-        }
-        return JsonResponse(response_data)
+        
+        if product.stock >= quantity:
+            if Cart.objects.filter(customuser=request.user, product=product).exists():
+                return JsonResponse({'success': False})  
+            
+            # Create or update cart for the user
+            cart, created = Cart.objects.get_or_create(
+                customuser=request.user, product=product
+            )
+            price = product.price
+            cart.quantity = quantity
+            cart.cart_price = price * Decimal(quantity)
+            cart.save()
+
+            response_data = {
+                'success': True,
+                'message': 'Item added to cart successfully.'
+            }
+            return JsonResponse(response_data)
+        else:
+            return JsonResponse({'success': False, 'message': 'Product out of stock'})
 
     return JsonResponse({'success': False})
 
 def remove_item_cart(request):  
     if request.method == "POST":
-        print('pooooooooooooooooooooooooooooooooooooooooooooooooooooooost')
         item_id = request.POST.get('item_id')
         print(item_id)
         try:
@@ -51,7 +57,6 @@ def remove_item_cart(request):
 
 def update_cart(request):
     if request.method == 'POST':
-        print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
         if request.user.is_authenticated:
             user = request.user
             print(user)
@@ -63,10 +68,6 @@ def update_cart(request):
             cart = Cart.objects.get(id=cart_id)
             
             product_obj = Products.objects.get(id=cart.product.id)
-            print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu')
-            print(product_obj)
-            print(cart)
-            print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB')
 
             if change == 1:
                 if product_obj.stock > cart.quantity:
@@ -85,24 +86,19 @@ def update_cart(request):
             cart.save()     
             cart_items = Cart.objects.filter(customuser=userr)
             total = sum(cart_items.values_list('cart_price',flat=True))
+            print(total)
+            print(prodTotal)
+            print(total)
 
             responsData = {
                 'updatedQuantity':cart.quantity,
                 'prodTotal':prodTotal,
                 'totalCartPrice':total
-
             }
-            print('CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC')
             return JsonResponse(responsData)
         print("Not enterred")
 
     return HttpResponse(status=200)
-
-
-        
-
-
-
 
 
 
@@ -117,5 +113,57 @@ def cart(request):
     }
 
     return render(request,'userside/cart.html',context)
+
+
+def checkout(request):
+    if request.user.is_authenticated:
+        userr = request.user
+        user = CustomUser.objects.filter(email=userr.email).first()
+        address = Address.objects.filter(user=user)
+        cart_items = Cart.objects.filter(customuser=user)
+        total = sum(cart_items.values_list('cart_price',flat=True))
+        context = {
+            'addresses': address,
+            'cart_items': cart_items,
+            'total': total
+        }
+        return render(request, 'userside/checkout.html',context)
+    
+    return redirect ('signin')
+
+
+def edit_address(request,id):
+    if request.method == 'POST':
+        user_address = Address.objects.filter(id=id).first()
+        user_address.name = request.POST.get('name')
+        user_address.phobe = request.POST.get('phone')
+        user_address.street_address = request.POST.get('street_address')
+        user_address.city = request.POST.get('city')
+        user_address.state = request.POST.get('state')
+        user_address.pin_code = request.POST.get('pincode')
+
+        user_address.save()
+        return redirect('checkout')
+        
+
+    user_address = Address.objects.filter(id=id).first()
+    return render(request,'userprofile/editAddress.html',{'user_data':user_address})
+
+
+def add_address(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        street_address= request.POST.get('street_address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        pincode = request.POST.get('pincode')
+
+        Address.objects.create(user=request.user,name=name, phone=phone, street_address= street_address, city=city, state=state, pin_code=pincode)
+        messages.info(request,'Address created successfully')
+        return redirect('checkout')
+    
+    return render(request,'userprofile/addAddress.html')
+
 
 

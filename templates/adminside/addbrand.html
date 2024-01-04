@@ -9,22 +9,53 @@
             <strong class="card-title">Add Brand</strong>
         </div>
         <div class="card-body">
-            <form method="post" action="{% url 'addbrand' %}">
+            <form id="brandForm" method="post" action="{% url 'addbrand' %}">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="brand_id">Brand ID:</label>
-                    <input type="text" class="form-control" id="brand_id" name="brand_id" required>
-                </div>
                 <div class="form-group">
                     <label for="brand_name">Brand Name:</label>
                     <input type="text" class="form-control" id="brand_name" name="brand_name" required>
+                    <small id="brandError" style="color: red;"></small>
+
                 </div>
                 <!-- Add other fields for brand details as needed -->
 
                 <button type="submit" class="btn btn-primary">Add Brand</button>
             </form>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="text {% if message.tags == 'info' %}text-success{% else %}text-danger{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
+
+
+<script>
+    function validateBrand(event) {
+        var brandName = document.getElementById("brand_name").value;
+        var errorField = document.getElementById("brandError");
+
+        // Regular expression to match only letters and ensure length >= 3
+        var regex = /^[a-zA-Z]{4,}$/;
+
+        if (!regex.test(brandName.trim())) {
+            errorField.textContent = "Brand name should contain only letters and be at least four characters long.";
+            event.preventDefault(); // Prevent form submission
+            return false;
+        } else {
+            errorField.textContent = "";
+            return true;
+        }
+    }
+
+    // Attach the validation to the form submit event
+    document.getElementById("brandForm").addEventListener("submit", validateBrand);
+</script>
+
 
 {% endblock content %}

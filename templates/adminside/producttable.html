@@ -38,7 +38,7 @@
                         <td>{{product.brand_id}}</td>
                         <td>{{product.price}}</td>
                         <td>{{product.stock}}</td>
-                        {% if product.is_listed %}
+                        {% if product.is_listed == True %}
                         <td>
                             <a href="../../product_status/{{product.id}}"><button class="badge badge-danger">Unlist</button></a>
                         </td>

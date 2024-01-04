@@ -9,11 +9,13 @@
             <strong class="card-title">Edit Category</strong>
         </div>
         <div class="card-body">
-            <form method="post" action="">
+            <form id="categoryForm" method="post" action="">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="category_name">Category Name:</label>
                     <input type="text" id="category_name" name="category_name" class="form-control" value="{{ category.name }}" required>
+                    <small id="categoryError" style="color: red;"></small>
+
                 </div>
                 <!-- Add other fields as needed -->
 
@@ -22,5 +24,27 @@
         </div>
     </div> 
 </div>
+
+<script>
+    function validateCategory(event) {
+        var categoryName = document.getElementById("category_name").value.trim();
+        var errorField = document.getElementById("categoryError");
+
+        // Regular expression to match only letters and ensure length >= 3
+        var regex = /^[a-zA-Z]{4,}$/;
+
+        if (!regex.test(categoryName.trim())) {
+            errorField.textContent = "Category name should contain only letters and be at least four characters long.";
+            event.preventDefault(); // Prevent form submission
+            return false;
+        } else {
+            errorField.textContent = "";
+            return true;
+        }
+    }
+
+    // Attach the validation to the form submit event
+    document.getElementById("categoryForm").addEventListener("submit", validateCategory);
+</script>
 
 {% endblock content %}

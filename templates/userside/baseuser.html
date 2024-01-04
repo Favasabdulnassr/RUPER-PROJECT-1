@@ -41,6 +41,11 @@
 			}
 		</style>
 
+		{% block style %}
+
+		{% endblock style %}
+
+
 	</head> 
 
 
@@ -167,14 +172,18 @@
 													<li class="level-0 menu-item">
 														<a href="{% url 'shop' %}"><span class="menu-item-text">Shop</span></a>
 													</li>
-													<li class="level-0 menu-item mega-menu mega-menu-fullwidth align-center current-menu-item">
+													<li class="level-0 menu-item mega-menu mega-menu-fullwidth align-center ">
 														<a href="{% url 'aboutus' %}"><span class="menu-item-text">About Us</span></a>
 														
 													</li>
+
+													{% if request.user.is_authenticated %}
+
 													<li class="level-0 menu-item ">
 														<a href="{% url 'myaccount' %}"><span class="menu-item-text">My Account</span></a>
 													
 													</li>
+													{% endif %}
 													<li class="level-0 menu-item">
 														<a href="{% url 'contact' %}"><span class="menu-item-text">Contact</span></a>
 													</li>
@@ -348,9 +357,9 @@
             {% endblock content %}
 
 			{% comment %} <div id="site-main" class="site-main"> {% endcomment %}
-				<div id="main-content" class="main-content">
+				<div id="main-content" class="main-content mt-5">
 					<div id="primary" class="content-area">
-						<div id="title" class="page-title">
+						{% comment %} <div id="title" class="page-title">
 							<div class="section-container">
 								<div class="content-title-heading">
 									<h1 class="text-title-heading">
@@ -361,7 +370,7 @@
 									<a href="index.html">Home</a><span class="delimiter"></span>Easy Fixes for Home Decor
 								</div>
 							</div>
-						</div>
+						</div> {% endcomment %}
 {% comment %} 
 						<div id="content" class="site-content" role="main">
 							<div class="section-padding">

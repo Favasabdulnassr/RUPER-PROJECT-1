@@ -9,22 +9,52 @@
             <strong class="card-title">Add Category</strong>
         </div>
         <div class="card-body">
-            <form method="post" action="{% url 'addcategory' %}">
+            <form id="categoryForm" method="post" action="{% url 'addcategory' %}">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="category_id">ID:</label>
-                    <input type="text" id="category_id" name="category_id" class="form-control" required>
-                </div>
                 <div class="form-group">
                     <label for="category_name">Category Name:</label>
                     <input type="text" id="category_name" name="category_name" class="form-control" required>
+                    <small id="categoryError" style="color: red;"></small>
                 </div>
                 
 
                 <button type="submit" class="btn btn-primary">Add Category</button>
             </form>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="text {% if message.tags == 'info' %}text-success{% else %}text-danger{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
+
+
+<script>
+    function validateCategory(event) {
+        var categoryName = document.getElementById("category_name").value;
+        var errorField = document.getElementById("categoryError");
+
+        // Regular expression to match only letters and ensure length >= 3
+        var regex = /^[a-zA-Z]{4,}$/;
+
+        if (!regex.test(categoryName.trim())) {
+            errorField.textContent = "Category name should contain only letters and be at least four characters long.";
+            event.preventDefault(); // Prevent form submission
+            return false;
+        } else {
+            errorField.textContent = "";
+            return true;
+        }
+    }
+
+    // Attach the validation to the form submit event
+    document.getElementById("categoryForm").addEventListener("submit", validateCategory);
+</script>
+
 
 {% endblock content %}

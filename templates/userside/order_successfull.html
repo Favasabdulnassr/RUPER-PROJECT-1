@@ -1,0 +1,87 @@
+{% extends 'userside/baseuser.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    /* Custom CSS for order details */
+    .order-details {
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 2px 2px 5px #ccc;
+      margin: 20px auto;
+      max-width: 600px;
+      background-color: #fff;
+    }
+  
+    .order-details h2 {
+      font-size: 24px;
+    }
+  
+    .order-details p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+  
+    .order-item {
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      background-color: #f9f9f9;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  
+    .order-item p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+  </style>
+{% endblock style %}
+{% block content1%} order_successfull {% endblock content1 %}
+
+{% block content %}
+
+<section id="order_placed" class="center_o p-5 bg-light">
+    <div class="container-xl">
+      <div class="row center_o1 text-center">
+        <div class="col-md-12 mb-5">
+          <h1 class="p-5"style="color: green;">ORDER PLACED SUCCESSFULLY!!!</h1>
+        </div>
+      </div>
+    </div>
+</section>
+  
+<section id="cart_page" class="cart mb-5">
+    <div class="container-xl">
+      <div class="order-details">
+        <div class="d-flex justify-content-between align-items-center">
+        <h2>Order Details</h2>
+        <a class="btn btn-outline-secondary" href="">View invoice</a>
+      </div>
+        <p><strong>Order ID:</strong> {{orders.order_id}}</p>
+        <p><strong>Order Date:</strong> {{orders.order_date}}</p>
+        <p><strong>Order Amount:</strong> {{orders.total_purchase_amount}}</p>
+        <p><strong>Shipping Address:</strong> {{orders.address.name}},{{orders.address.city}}, {{orders.address.street_address}}, {{orders.address.phone}} ,{{orders.address.pin_code}}</p>
+  
+    <!-- Display order items as needed -->
+    {% for order in orders.ordersitem_set.all %}
+    <div class="order-item">
+      <div style="display: flex; align-items: center;">
+        <div style="flex: 2;">
+          <p><strong>Product Name:</strong> {{order.product.products_name}}</p>
+          <p><strong>Quantity:</strong> {{order.quantity}}</p>
+           <p><strong>Price:</strong> {{order.price}}</p>
+          <p><strong>Subtotal:</strong>{{order.total_item_amount}}</p> 
+        </div>
+        {% comment %} <div style="flex: 1;">
+          <img style=" float:right;" src="" alt="Product A Image" height="150px">
+        </div> {% endcomment %}
+      </div>
+    </div>
+    {% endfor %}
+      </div>
+    </div>
+</section>
+
+{% endblock content %}
