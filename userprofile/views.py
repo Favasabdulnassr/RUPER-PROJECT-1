@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import login_required
 import re
 from django.http import JsonResponse
 from order.models import OrdersItem,Orders
+from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 # Create your views here.
 @login_required
@@ -16,12 +19,15 @@ def myaccount(request):
     user_data = Address.objects.filter(user=user)
     orders = Orders.objects.filter(user=user)
     order_items = OrdersItem.objects.filter(order__in=orders).order_by("-id")
-    return render(request,'userprofile/myaccount.html',{"address_data":user_data, "order_items":order_items})
+ 
+
+    return render(request, 'userprofile/myaccount.html', {"address_data": user_data, "order_items": order_items})
+
 
 
 def update_account(request):
     if request.method == 'POST':
-        email = request.user
+        email = request.user.email
         user = CustomUser.objects.get(email=email)
 
         first_name = request.POST.get("account_first_name")

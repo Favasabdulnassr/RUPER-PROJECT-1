@@ -27,10 +27,10 @@ def cancel_order(request,id):
         order.product.stock += order.quantity
         order.save()
         order.product.save()
-        return redirect('myaccount') 
+        return redirect('orderss') 
     else:
         messages.error(request,'product already delivered ')  
-        return redirect('myaccount') 
+        return redirect('orderss') 
 
 
 def placer_order(request):

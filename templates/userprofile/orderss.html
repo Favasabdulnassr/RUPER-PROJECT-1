@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+{% extends 'userside/baseuser.html' %}
+{% load static %}
+{% block content1%} orderss {% endblock content1 %}
+{% block style %}
+
+<style>
+        /* Basic styles for the table */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px; /* Add space above the table */
+            
+        }
+        
+        .table th,
+        .table td {
+            padding: 8px;
+            text-align: left;
+            vertical-align: middle;
+            border: 1px solid #ccc; /* Add borders around table cells */
+
+        }
+        
+        /* Styles for table header */
+        .table th {
+            background-color: #f2f2f2; /* Header background color */
+        }
+        
+        /* Styles for table body */
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table img {
+            max-height: 80px; /* Limit the height of product images */
+            max-width: 80px; /* Limit the width of product images */
+        }
+        
+        /* Styles for table cell containing images */
+        .table tbody td:first-child {
+            padding: 4px;
+        }
+        
+        /* Styles for status badges */
+        .badge {
+            padding: 5px 8px;
+            border-radius: 3px;
+        }
+        
+        .text-danger {
+            color: #dc3545;
+            background-color: #f8d7da;
+        }
+        
+        .text-success {
+            color: #28a745;
+            background-color: #d4edda;
+        }
+        
+        .text-warning {
+            color: #ffc107;
+            background-color: #fff3cd;
+        }
+        
+        .text-primary {
+            color: #007bff;
+            background-color: #cce5ff;
+        }
+        
+        /* Styles for modals */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1040;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            outline: 0;
+        }
+        
+        .modal-dialog {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Header styles */
+
+
+/* Pagination styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination .page-item {
+    list-style: none;
+    margin: 0 5px;
+    display: inline-block;
+}
+
+.pagination .page-link {
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Back to home button */
+.back-to-home {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    padding: 10px;
+    text-align: center;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.back-to-home:hover {
+    background-color: #0056b3;
+}
+
+/* Basic styles for the table */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Rest of the table styles remain unchanged from the previous code */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.content-wrapper {
+    position: relative;
+    top: 150px; /* Adjust this value as needed */
+    padding-bottom: 200px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    max-width: 100%; /* Set a maximum width */
+    margin: 0 auto; /* Center the table */
+}
+
+.table td {
+    padding: 8px;
+    text-align: left;
+    vertical-align: middle;
+    max-width: 200px; /* Set a maximum width for table cells */
+    word-wrap: break-word; /* Allow long text to wrap */
+}
+
+/* Define styles for product images */
+.table tbody img {
+    max-height: 100px; /* Set a maximum height for product images */
+    max-width: 100px; /* Set a maximum width for product images */
+}
+
+
+
+.btn-block {
+    display: block;
+    width: 13%;
+}
+
+</style>
+
+{% endblock style %}
+
+{% block content %}
+
+<div class="content-wrapper">
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Payment method</th>
+                    <th>Order Status</th>
+                    <th>Actions</th>    
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop through your order items and populate the table -->
+                {% for order in order_items %}
+                <tr>
+                    <td><img src="{{ order.product.image_set.last.image.url }}" height="100px"></td>
+                    <td>{{ order.product.products_name }}</td>
+                    <td>{{ order.product.price }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.total_item_amount }}</td>
+                    <td>{{ order.order.payment_method }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if order.status == "Cancelled" %}
+                                text-danger
+                            {% elif order.status == "Delivered" %}
+                                text-success
+                            {% elif order.status == "Order confirmed" %}
+                                text-warning
+                            {% else %}
+                                text-primary
+                            {% endif %}
+                        ">
+                            {{ order.status }}
+                        <span>
+                    </td>
+                    {% if order.status == "Order confirmed" %}
+                    <td>
+                        <a href="#deleteAddress-{{ forloop.counter }}" class="delete btn btn-sm btn-outline-danger" data-toggle="modal" user-address-id="{{ order.id }}">Cancel Order</a>
+                    </td>
+                    {% else %}
+                    <td>
+                        <span class="badge 
+                            {% if order.status == "Cancelled" %}
+                                text-danger
+                            {% else %}
+                                text-success
+                            {% endif %}
+                        ">
+                            {{ order.status }}
+                        <span>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>    
+        </table>
+
+        <!-- Modals for Cancel Order -->
+        {% for order in order_items %}
+        <div id="deleteAddress-{{ forloop.counter }}" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Cancel Order!</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure to Cancel this Order?</p>
+                        <p class="text-warning"><small>{{ order.product.products_name }}</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <a href="{% url 'cancel_order' order.id %}" type="submit" class="btn btn-danger">Cancel Order</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if order_items.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ order_items.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% for num in order_items.paginator.page_range %}
+                {% if order_items.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if order_items.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ order_items.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <!-- Back to My Account Button -->
+        <a href="{% url 'myaccount' %}" class="btn btn-primary btn-block">Back to My Account</a>
+    </div>
+
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<!-- Your additional scripts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% block contentscript%}
+		
+        <script>
+            function confirmDelete(button) {
+             const itemId = button.getAttribute('user-address-id');
+             Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#d33',
+              cancelButtonColor: '#1d4289',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // User confirmed the deletion, proceed with the AJAX request to remove the address
+                const csrftoken = getCookie('csrftoken');
+                fetch(`/deleteaddress/${itemId}`, {
+                  method: 'DELETE',
+                  headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json',
+                  },
+                })
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok.');
+                    }
+                    return response.json();
+                  })
+                  .then((data) => {
+                    console.log('Address removed successfully.', data);
+                    location.reload(); // Reload the page
+                  })
+                  .catch((error) => {
+                    console.error('Error removing Address', error);
+                  });
+              }
+            });
+          }
+          
+          function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+          }
+            
+        </script>
+
+ {% endblock contentscript%}
+
+{% endblock content %}
+

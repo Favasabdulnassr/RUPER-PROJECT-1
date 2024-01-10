@@ -4,12 +4,28 @@
 {% block content%}
 
 <div class="col-md-12">
-    <div class="card">
+    {% comment %} <div class="card">
         <div class="card-header">
-            <strong class="card-title">Add Product</strong>
-        </div>
+            <strong class="card-title">edit Product</strong>
+        </div> {% endcomment %}
         <div class="card-body">
-            <form method="post" action="" enctype="multipart/form-data">
+
+                    
+                    <form id="deleteImagesForm" method="post" action="/delete_images/" enctype="multipart/form-data">
+                        <label for="product_image">Product Images :</label>
+                        {% for image in prod.image_set.all %}
+                        <div class="mb-3">
+                            <input type="checkbox" id="image_{{ image.id }}" name="delete_image[]" value="{{ image.id }}">
+                            <label for="image_{{ image.id }}"><img src="{{ image.image.url }}" alt="Product Image" style="max-width: 200px;"></label>
+                        </div>
+                     {% endfor %}
+
+
+                    </form>
+                    <button id="deleteImagesBtn" type="submit" class="btn btn-danger mb-3" name="action" value="delete"   style="width: 120px;">Delete Images</button>
+
+
+            <form id="productForm" method="post" action="" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="product_name">Product Name</label>
@@ -55,13 +71,9 @@
                     <span id="stock_error" class="error" style="color: red;"></span>
 
                 </div>
-                <div class="form-group">
-                    <label for="product_image">Product Image</label>
-                    <input type="file" class="form-control-file" id="product_image" name="product_image" accept="image/*" multiple>
+                <input type="file" class="form-control-file" id="product_image" name="product_image" accept="image/*" multiple>
 
-                </div>
-
-                <button type="submit" class="btn btn-primary">Edit Product</button>
+                <button type="submit" class="btn btn-primary mt-2">Edit Product</button>
             </form> 
 
             {% if messages %}
@@ -77,6 +89,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -121,5 +134,67 @@
         });
     });
 </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#deleteImagesBtn').on('click', function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            
+            const checkedImages = $('input[name="delete_image[]"]:checked');
+            
+            if (checkedImages.length > 0) {
+                // Show SweetAlert confirmation dialog
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are about to delete selected images.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#1d4289',
+                    confirmButtonText: 'Yes, delete!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Prepare the data to be sent via AJAX
+                        const imageIds = checkedImages.map(function() {
+                            return this.value;
+                        }).get();
+    
+                        // Send an AJAX request to perform deletion
+                        $.ajax({
+                            url: '/delete_images/', // Replace with your delete images endpoint
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val() || '{{ csrf_token }}'
+                            },
+                            data: {
+                                image_ids: imageIds // Sending the list of image IDs to be deleted
+                            },
+                            success: function(response) {
+                                // Handle success response (if needed)
+                                console.log('Deletion successful:', response);
+                                location.reload(); // Reload the page
+
+    
+                            },
+                            error: function(error) {
+                                // Handle error response (if needed)
+                                console.error('Deletion failed:', error);
+                            }
+                        });
+                    }
+                });
+            } else {
+                Swal.fire('No images selected!', 'Please select images to delete.', 'warning');
+            }
+        });
+    });
+    
+
+</script>
+
 
 {% endblock %}

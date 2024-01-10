@@ -10,7 +10,6 @@ urlpatterns = [
     path('addaddress/',views.add_address,name='addaddress'),
     path('deleteaddress/<str:id>',views.delete_address,name='deleteaddress'),
 
-
     
 ]
 

@@ -136,7 +136,7 @@ def edit_address(request,id):
     if request.method == 'POST':
         user_address = Address.objects.filter(id=id).first()
         user_address.name = request.POST.get('name')
-        user_address.phobe = request.POST.get('phone')
+        user_address.phone = request.POST.get('phone')
         user_address.street_address = request.POST.get('street_address')
         user_address.city = request.POST.get('city')
         user_address.state = request.POST.get('state')

@@ -8,6 +8,7 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import user_passes_test
 from order.models import OrdersItem
+from django.http import JsonResponse
 
 
 
@@ -92,7 +93,8 @@ def editproduct(request,id):
     cat=Category.objects.all()
     bran=Brands.objects.all()
     prod=Products.objects.filter(id=id).first()
-    if request.method == 'POST':
+
+    if request.method == 'POST':  
         product = request.POST.get('product_name')
         price = request.POST.get('price')
         stock = request.POST.get('stock')
@@ -104,8 +106,6 @@ def editproduct(request,id):
         products = Products(id=id,products_name=product, category_id=c,brand_id=b, price=price, stock=stock)
         products.save()
         if image:
-            p=Image.objects.filter(product_id=id)
-            p.delete()
             for i in image:
                 images = Image(product_id=products,image=i)
                 images.save()
@@ -117,6 +117,34 @@ def editproduct(request,id):
     }
     return render(request,'adminside/editproduct.html',context)
 
+def delete_images(request):
+    if request.method == 'POST':
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        image_ids = request.POST.getlist("image_ids[]")
+        print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb') 
+
+        print(image_ids) 
+        try:
+            image_ids = list(map(int, image_ids))  # Convert strings to integers
+            for image_id in image_ids:
+                 print(type(image_id))
+
+            print('cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')
+            # Delete images based on the received IDs
+            images_to_delete = Image.objects.filter(pk__in=image_ids)
+            print('ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
+            print(images_to_delete)
+            for image in images_to_delete:
+                image.delete()
+                print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+
+            return JsonResponse({'message': 'Images deleted successfully'}, status=200)
+
+        except Exception as e:
+            return JsonResponse({'message': 'Error deleting images', 'error': str(e)}, status=500)
+    
+    else:
+        return JsonResponse({'message': 'Invalid request method'}, status=400)
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

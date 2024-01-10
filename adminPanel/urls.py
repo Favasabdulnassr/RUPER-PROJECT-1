@@ -23,5 +23,6 @@ urlpatterns = [
     path('deletebrand/<str:id>',views.deletebrand,name='deletebrand'),
     path('brand_status/<str:id>',views.brand_status,name='brand_status'),
     path('orders',views.orders,name='orders'),
-    path('order_details/<str:id>/',views.order_details,name='order_details')
+    path('order_details/<str:id>/',views.order_details,name='order_details'),
+    path('delete_images/',views.delete_images,name='delete_images'),
 ]
