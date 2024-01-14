@@ -42,6 +42,16 @@ class OrdersItem(models.Model):
     status = models.CharField(default='Order confirmed',max_length=200)
     def total_price(self):
         return self.quantity * self.price
+
+    def __str__(self) -> str:
+        return f"{self.order.user}'s {self.product}"    
+    
+
+
+
+
+
+
     
     
     

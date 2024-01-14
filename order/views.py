@@ -7,6 +7,7 @@ from django.db import transaction
 from.models import *
 from datetime import timedelta
 from django.contrib import messages
+from django.core.cache import cache
 # Create your views here.
 
 
@@ -17,6 +18,7 @@ def order_successfull(request):
         order_id = request.session['order_id']
         print('ssssssssss',order_id)
         current_order = Orders.objects.get(order_id=order_id)
+        cache.clear()
 
         return render(request,'userside/order_successfull.html',{'orders': current_order})
     
@@ -120,5 +122,16 @@ def placer_order(request):
             }
             return JsonResponse(response_data)
         
-
+def proceed_to_pay(request):
+    user = request.user
+    cart = Cart.objects.filter(customuser=user)
+    total_price = 0
+    for item in cart:
+        total_price += item.cart_price
+    name = user.first_name
+    print(name)
+    email = user.email    
+    print(email)
+    contact = user.phone_number
+    return JsonResponse({'total_price':total_price, 'email':email, 'name':name, 'contact':contact})     
 

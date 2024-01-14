@@ -98,95 +98,6 @@
                                         </div>
                                     </div>
                                      <div class="tab-pane fade" id="orders" role="tabpanel">
-                                       {% comment %} <div class="my-account-orders">
-                                            <div class="table-responsive">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Product Image</th>
-                                                            <th>Product</th>
-                                                            <th>Price</th>
-                                                            <th>Quantity</th>
-                                                            <th>Total Price</th>
-                                                            <th>Payment method</th>
-                                                            <th>Order Status</th>
-                                                            <th>Actions</th>    
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {% for order in order_items %}
-                                                        <tr>
-                                                            <td><img src='{{order.product.image_set.last.image.url}}' height='100px'></td>
-                                                            <td>{{order.product.products_name}}</td>
-                                                            <td>{{order.product.price}}</td>
-                                                            <td>{{order.quantity}}</td>
-                                                            <td>{{order.total_item_amount}}</td>
-                                                            <td>{{order.order.payment_method}}</td>
-                                                            <td><span class="badge {% if order.status == "Cancelled" %}text-danger {% elif order.status == "Delivered" %} text-success {% elif order.status == "Order confirmed" %} text-warning {% else %}text-primary{% endif %}">{{order.status}}<span></td>
-                                                                {% if order.status == "Order confirmed" %}
-                                                            <td><a href="#deleteAddress-{{forloop.counter}}" class="delete btn btn-sm btn-outline-danger" data-toggle="modal">Cancel Order<a></td>
-                                                                {% else %}
-                                                                <td><span class="badge {% if order.status == "Cancelled" %}text-danger{% else %}text-success{% endif %}">{{order.status}}<span></td>
-                                                                    {% endif %}
-                                                            </tr>
-                                                        {% endfor %}
-                                                    </tbody>    
-                                                </table>
-                                                {% for order in order_items %}
-                                                <div id="deleteAddress-{{forloop.counter}}" class="modal fade">
-                                                  <div class="modal-dialog modal-dialog-centered">
-                                                      <div class="modal-content">
-                                                          <div class="modal-header">						
-                                                              <h4 class="modal-title">Cancel Order!</h4>
-                                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                          </div>
-                                                          <div class="modal-body">					
-                                                              <p>Are you sure to Cancel this Order?</p>
-                                                              <p class="text-warning"><small>{{order.product.products_name}}</small></p>
-                                                          </div>
-                                                          <div class="modal-footer">
-                                                              <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                                              <a href="{% url 'cancel_order' order.id %}" type="submit" class="btn btn-danger">Cancel Order</a>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                              {% endfor %}
-
-                                            </div>
-                                        </div>
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination justify-content-center">
-                                                <!-- Previous Page Link -->
-                                                {% if order_items.has_previous %}
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="?page={{order_items.previous_page_number}}" aria-label="Previous">
-                                                            <span aria-hidden="true">&laquo;</span>
-                                                            <span class="sr-only">Previous</span>
-                                                        </a>
-                                                    </li>
-                                                {% endif %}
-                                
-                                                <!-- Page Links -->
-                                                {% for num in order_items.paginator.page_range %}
-                                                    {% if order_items.number == num %}
-                                                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-                                                    {% else %}
-                                                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                
-                                                <!-- Next Page Link -->
-                                                {% if order_items.has_next %}
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="?page={{ order_items.next_page_number }}" aria-label="Next">
-                                                            <span aria-hidden="true">&raquo;</span>
-                                                            <span class="sr-only">Next</span>
-                                                        </a>
-                                                    </li>
-                                                {% endif %}
-                                            </ul>
-                                        </nav>{% endcomment %}
                                             <table id="orders-table" class="display" style="width:100%">
                                                 <thead>
                                                     <tr>
@@ -256,8 +167,7 @@
                                             </table>
                                             
                                         
-                                          
-                                    </div> 
+                                        </div> 
                                     
                                  
                                     <div class="tab-pane fade" id="addresses" role="tabpanel">

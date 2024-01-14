@@ -9,7 +9,7 @@
 }
 </style>
 {% endblock style %}
-{% block content1%} wishlist{% endblock content1 %}
+{% block content1%} checkout{% endblock content1 %}
 {% block content %}
 
 <div id="site-main" class="site-main">
@@ -129,14 +129,14 @@
                                             </div>
                                             <div id="payment" class="checkout-payment">
                                                 <ul class="payment-methods methods custom-radio">
-                                                    {% comment %} <li class="payment-method">
-                                                        <input type="radio" class="input-radio" name="payment_method" value="bacs" checked="checked">
-                                                        <label for="payment_method_bacs">Direct bank transfer</label>
+                                                    <li class="payment-method">
+                                                        <input type="radio" class="input-radio" name="payment_method" value="Razorpay" checked="checked">
+                                                        <label for="payment_method_bacs">Razor pay</label>
                                                         <div class="payment-box">
-                                                            <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
+                                                            <p>Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
                                                         </div>
                                                     </li>
-                                                    <li class="payment-method">
+                                                    {% comment %} <li class="payment-method">
                                                         <input type="radio" class="input-radio" name="payment_method" value="cheque">
                                                         <label>Check payments</label>
                                                         <div class="payment-box">
@@ -178,6 +178,8 @@
 
 {% block contentscript%}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 <script>
@@ -195,37 +197,140 @@
           var payment = $("input[name=payment_method]:checked").val();
           console.log('button clicked');
           console.log(address, "address");
+          var cartIsEmpty =  {% if cart_items %}false{% else %}true{% endif %};
 
-          console.log('Before AJAX request');
-          // Get the CSRF token
-          var csrf_token = $("[name=csrfmiddlewaretoken]").val();
+          if (cartIsEmpty) {
+            alert("Your cart is empty. Please add items to your cart before placing an order.");
+            return;   
+          }
+            
+            console.log('Before AJAX request');
+            // Get the CSRF token
+            var csrf_token = $("[name=csrfmiddlewaretoken]").val();
 
-          // Send the data using jQuery AJAX
-          $.ajax({
-              type: "POST",
-              url: "/place_order/",
-              data: {
-                  total: total,
-                  address: address,
-                  payment: payment,
-                  csrfmiddlewaretoken: csrf_token,
-              },
-              success: function(response) {
-                  console.log("entered");
-                  if (response && response.success === true) {
-                      console.log("order_success");
-                      window.location.href = '/order_success/';
-                  } 
-                  else{
-                    alert(" stock is not available")
+            // Send the data using jQuery AJAX
+            if (payment === "Razorpay") {
+                console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+
+                $.ajax({
+                    method: "GET",
+                    url: "/procceed_to_pay",
+                    success:function(response){
+                        console.log('ddddddddddddddddddddddddddddddddddddddddddddddddd')
+
+                        var options = {
+                            "key": "rzp_test_VlRkBL8cA77GO1", // Enter the Key ID generated from the Dashboard
+                            "amount":100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                            "currency": "INR",
+                            "name": "Ruper", //your business name
+                            "description": "Thank you for buting from us",
+                            "image": "https://example.com/your_logo",
+                    //      "order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                            "handler": function (responseb){
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/place_order/",
+                                    data: {
+                                        total: total,
+                                        address: address,
+                                        payment: payment,
+                                        csrfmiddlewaretoken: csrf_token,
+                                    },
+                                    success: function(response) {
+                                        console.log("entered");
+                                        if (response && response.success === true) {
+                                            console.log("order_success");
+                                        
+                                        // Check if the payment method is Razorpay
+                                           location.reload(true);
+
+                                            // Redirect to the success page for other payment methods
+                                            window.location.href = '/order_success/';
+                                        
+                                        } 
+                                        else{
+                                        alert(" stock is not available")
+                                    }
+                                    }
+                                });
+                            
+                            },
+                            "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+                                "name": response.name, //your customer's name
+                                "email": response.email, 
+                                "contact": response.contact  //Provide the customer's phone number for better conversion rates 
+                            },
+                            
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+                        rzp1.open();
+                        console.log('fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
+
+
+                    }
+                })
+
+                
+            }
+            else{
+            $.ajax({
+                type: "POST",
+                url: "/place_order/",
+                data: {
+                    total: total,
+                    address: address,
+                    payment: payment,
+                    csrfmiddlewaretoken: csrf_token,
+                },
+                success: function(response) {
+                    console.log("entered");
+                    if (response && response.success === true) {
+                        console.log("order_success");
+                        
+                        // Check if the payment method is Razorpay
+                            location.reload(true);
+                            // Redirect to the success page for other payment methods
+                            window.location.href = '/order_success/';
+                        
+                    } 
+                    else{
+                        alert(" stock is not available")
+                    }
                 }
-              }
-          });
-          console.log('After AJAX request');
-      });
+            });
+
+            }
+
+    console.log('After AJAX request');
+
+
+
+           
+        });
   });
  
 </script>
+
+<script>
+    // Check if the page has been reloaded before
+    var hasReloaded = document.cookie.indexOf('reloadFlag=1') !== -1;
+
+    // Reload the entire page if it hasn't been reloaded before
+    if (!hasReloaded) {
+        // Set a cookie to track that the page has been reloaded
+        document.cookie = 'reloadFlag=1; max-age=3600';  // Set an expiry time (e.g., 1 hour)
+
+        // Reload the page
+        location.reload(true);  // The true parameter forces a reload from the server
+    }
+</script>
+
+
+   
 
 {% endblock contentscript%}
 

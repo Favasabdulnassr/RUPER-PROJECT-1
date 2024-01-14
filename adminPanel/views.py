@@ -360,3 +360,12 @@ def order_details(request,id):
     statuses=['Order confirmed','Cancelled','Delivered']
     return render(request,'adminside/order_details.html',{'order':order, 'statuses':statuses})
 
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
+
+def reports(request):
+    return render(request,'adminside/reports.html')
+
+
