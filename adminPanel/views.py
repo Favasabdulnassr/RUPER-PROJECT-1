@@ -362,10 +362,4 @@ def order_details(request,id):
 
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
-
-def reports(request):
-    return render(request,'adminside/reports.html')
-
 

@@ -6,6 +6,20 @@
 <div class="content">
     <!-- Animated -->
     <div class="animated fadeIn">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mb-3">Select Sales Report</h4>
+                        <div class="btn-group" role="group" aria-label="Sales Report Period">
+                            <a href="../../dashboard?period=today" class="btn btn-success mr-2">Today</a>
+                            <a href="../../dashboard?period=this_week" class="btn btn-success mr-2">This week</a>
+                            <a href="../../dashboard?period=this_year" class="btn btn-success mr-2">This Year</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Widgets  -->
         <div class="row">
             <!-- Revenue Widget -->
@@ -18,7 +32,7 @@
                             </div>
                             <div class="stat-content">
                                 <div class="text-left dib">
-                                    <div class="stat-text">$<span class="count" id="revenueCount">23569</span></div>
+                                    <div class="stat-text">$<span class="count" id="revenueCount">{{total_revenue}}</span></div>
                                     <div class="stat-heading">Revenue</div>
                                 </div>
                             </div>
@@ -37,7 +51,7 @@
                             </div>
                             <div class="stat-content">
                                 <div class="text-left dib">
-                                    <div class="stat-text"><span class="count" id="salesCount">3435</span></div>
+                                    <div class="stat-text"><span class="count" id="salesCount">{{total_orders}}</span></div>
                                     <div class="stat-heading">Sales</div>
                                 </div>
                             </div>
@@ -56,7 +70,7 @@
                             </div>
                             <div class="stat-content">
                                 <div class="text-left dib">
-                                    <div class="stat-text"><span class="count" id="clientsCount">2986</span></div>
+                                    <div class="stat-text"><span class="count" id="clientsCount">{{total_users}}</span></div>
                                     <div class="stat-heading">Clients</div>
                                 </div>
                             </div>
@@ -73,7 +87,7 @@
                             <div class="stat-icon dib"><i class="ti-money text-success border-success"></i></div>
                             <div class="stat-content dib">
                                 <div class="stat-text">Total Profit</div>
-                                <div class="stat-digit" id="totalProfitCount">1,012</div>
+                                <div class="stat-digit" id="totalProfitCount">{{total_profit}}</div>
                             </div>
                         </div>
                     </div>
@@ -82,33 +96,23 @@
         </div>
 
         <!-- Sales Report Selector -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="mb-3">Select Sales Report</h4>
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-secondary active" id="dailyBtn">
-                                <input type="radio" name="options" id="daily" autocomplete="off" checked> Daily
-                            </label>
-                            <label class="btn btn-secondary" id="weeklyBtn">
-                                <input type="radio" name="options" id="weekly" autocomplete="off"> Weekly
-                            </label>
-                            <label class="btn btn-secondary" id="yearlyBtn">
-                                <input type="radio" name="options" id="yearly" autocomplete="off"> Yearly
-                            </label>
-                        </div>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-12 bg-dark mb-3">
+                <!-- Content of the full-width bar goes here -->
             </div>
         </div>
-
         <!-- Sales Graph -->
         <div class="row">
+            
             <div class="col-lg-6">
                 <div class="card" id="salesGraphCard">
                     <div class="card-body">
                         <h4 class="mb-3">Sales Report</h4>
+                        <select id="timeInterval" onchange="updateChart()">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
                         <canvas id="sales-chart" style="width:100%;"></canvas>
                     </div>
                 </div>
@@ -142,7 +146,7 @@
             type: 'line',
             defaultFontFamily: 'Montserrat',
             datasets: [ {
-                label: "Foods",
+                label: "sales",
                 data: [ 0, 30, 15, 110, 50, 63, 120 ],
                 backgroundColor: 'transparent',
                 borderColor: 'rgba(220,53,69,0.75)',
@@ -151,16 +155,6 @@
                 pointRadius: 5,
                 pointBorderColor: 'transparent',
                 pointBackgroundColor: 'rgba(220,53,69,0.75)',
-                    }, {
-                label: "Electronics",
-                data: [ 0, 50, 40, 80, 35, 99, 80 ],
-                backgroundColor: 'transparent',
-                borderColor: 'rgba(40,167,69,0.75)',
-                borderWidth: 3,
-                pointStyle: 'circle',
-                pointRadius: 5,
-                pointBorderColor: 'transparent',
-                pointBackgroundColor: 'rgba(40,167,69,0.75)',
                     } ]
         },
         options: {
@@ -217,6 +211,7 @@
 
 
 </script>
+
 
 
 
