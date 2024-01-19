@@ -210,7 +210,6 @@
 
             // Send the data using jQuery AJAX
             if (payment === "Razorpay") {
-                console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
                 $.ajax({
                     method: "GET",
@@ -220,7 +219,7 @@
 
                         var options = {
                             "key": "rzp_test_VlRkBL8cA77GO1", // Enter the Key ID generated from the Dashboard
-                            "amount":100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                            "amount":response.total_price*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                             "currency": "INR",
                             "name": "Ruper", //your business name
                             "description": "Thank you for buting from us",

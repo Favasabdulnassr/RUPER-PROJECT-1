@@ -8,6 +8,8 @@ from.models import *
 from datetime import timedelta
 from django.contrib import messages
 from django.core.cache import cache
+# from django.contrib.auth.decorators import login_required
+# from django.views.decorators.cache import never_cache
 # Create your views here.
 
 
@@ -129,9 +131,14 @@ def proceed_to_pay(request):
     for item in cart:
         total_price += item.cart_price
     name = user.first_name
-    print(name)
     email = user.email    
-    print(email)
     contact = user.phone_number
     return JsonResponse({'total_price':total_price, 'email':email, 'name':name, 'contact':contact})     
+
+def view_invoice(request):
+    order_id = request.session["order_id"]
+    current_order = Orders.objects.get(order_id=order_id)
+    context = {"current_order":current_order}
+    return render(request,"userside/invoice.html",context)
+
 

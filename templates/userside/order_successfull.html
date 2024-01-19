@@ -57,7 +57,7 @@
       <div class="order-details">
         <div class="d-flex justify-content-between align-items-center">
         <h2>Order Details</h2>
-        <a class="btn btn-outline-secondary" href="">View invoice</a>
+        <a class="btn btn-outline-secondary" href="{% url 'invoice' %}">View invoice</a>
       </div>
         <p><strong>Order ID:</strong> {{orders.order_id}}</p>
         <p><strong>Order Date:</strong> {{orders.order_date}}</p>

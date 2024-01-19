@@ -155,7 +155,7 @@
 								<div class="row">
 									<div class="col-xl-3 col-lg-2 col-md-12 col-sm-12 col-12 header-left">
 										<div class="site-logo">
-											<a href="index.html">
+											<a href="">
 												<img width="400" height="79" src="{% static "media/logo.png" %}" alt="Ruper – Furniture HTML Theme" />
 											</a>
 										</div>
@@ -285,7 +285,7 @@
 									  <div class="col-md-2 col-lg-2">
 										<div class="wishlist-box">
 											<a href="{% url 'wishlist' %}"><i class="icon-heart"></i></a>
-											<span class="count-wishlist">1</span>
+											{% comment %} <span class="count-wishlist">1</span> {% endcomment %}
 										</div>
 									  </div>
 										<!-- Cart -->
@@ -293,7 +293,9 @@
 											<div class="dropdown mini-cart top-cart">
 												<div class="remove-cart-shadow"></div>
 												<a class="cart-icon" href="{% url 'cart' %}">
-													<div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
+													<div class="icons-cart"><i class="icon-large-paper-bag"></i>
+														{% comment %} <span class="cart-count">2</span> {% endcomment %}
+													</div>
 												</a>
 												
 											</div>
@@ -428,29 +430,21 @@
 		<div class="back-top button-show">
 			<i class="arrow_carrot-up"></i>
 		</div>
-
+           
 		<!-- Search -->
 		<div class="search-overlay">
 			<div class="close-search"></div>
 			<div class="wrapper-search">
-				<form role="search" method="get" class="search-from ajax-search" action="#">
+				<form role="search" method="get" class="search-from ajax-search" action="{% url "search" %}">
 					<div class="search-box">
 						<button id="searchsubmit" class="btn" type="submit">
 							<i class="icon-search"></i>
 						</button>
-						<input id="myInput" type="text" autocomplete="off" value="" name="s" class="input-search s" placeholder="Search...">
+						<input id="myInput" type="text" autocomplete="off" value="" name="search" class="input-search s" placeholder="Search...">
 						<div class="search-top">
 							<div class="close-search">Cancel</div>
 						</div>
-						<div class="content-menu_search">
-							<label>Suggested</label>
-							<ul id="menu_search" class="menu">
-								<li><a href="#">Furniture</a></li>
-								<li><a href="#">Home Décor</a></li>
-								<li><a href="#">Industrial</a></li>
-								<li><a href="#">Kitchen</a></li>
-							</ul>			
-						</div>
+						
 					</div>
 				</form>	
 			</div>	

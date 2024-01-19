@@ -9,12 +9,12 @@
                 <div class="section-container">
                     <div class="content-title-heading">
                         <h1 class="text-title-heading">
-                            Bed &amp; Bath		
+                             Shop	
                         </h1>
                     </div>
-                    <div class="breadcrumbs">
+                    {% comment %} <div class="breadcrumbs">
                         <a href="index.html">Home</a><span class="delimiter"></span><a href="shop-grid-left.html">Shop</a><span class="delimiter"></span> Bed &amp; Bath
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
 
@@ -60,7 +60,7 @@
                                 </div>
 
                                 <!-- Block Product Filter -->
-                                <div class="block block-product-filter">
+                                {% comment %} <div class="block block-product-filter">
                                     <div class="block-title"><h2>Price</h2></div>
                                     <div class="block-content">
                                         <div id="slider-range" class="price-filter-wrap">
@@ -72,7 +72,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> {% endcomment %}
 
                                 <!-- Block Product Filter -->
                                
@@ -166,11 +166,8 @@
                                             <span class="sort-toggle dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Default sorting</span>
                                             <ul class="sort-list dropdown-menu" x-placement="bottom-start">
                                                 <li class="active"><a href="#">Default sorting</a></li>
-                                                <li><a href="#">Sort by popularity</a></li>
-                                                <li><a href="#">Sort by average rating</a></li>
-                                                <li><a href="#">Sort by latest</a></li>
-                                                <li><a href="#">Sort by price: low to high</a></li>
-                                                <li><a href="#">Sort by price: high to low</a></li>
+                                                <li><a href="../../shop?sort=price_low_to_high">Sort by price: low to high</a></li>
+                                                <li><a href="../../shop?sort=price_high_to_low">Sort by price: high to low</a></li>
                                             </ul>
                                         </div>
                                         <ul class="layout-toggle nav nav-tabs">
@@ -228,16 +225,27 @@
                                                
                                     </div>
                                 </div> 
-
+                                {% comment %} {% for category in categories %} {% endcomment %}
                                 <nav class="pagination">
                                     <ul class="page-numbers">
-                                        <li><a class="prev page-numbers" href="#">Previous</a></li>
-                                        <li><span aria-current="page" class="page-numbers current">1</span></li>
-                                        <li><a class="page-numbers" href="#">2</a></li>
-                                        <li><a class="page-numbers" href="#">3</a></li>
-                                        <li><a class="next page-numbers" href="#">Next</a></li>
+                                        {% if products.has_previous %}
+                                        <li><a class="prev page-numbers" href="?page={{products.previous_page_number}}&categoryy={{cat}}&sort={{sort}}&search={{search}}">Previous</a></li>
+                                        {% endif %}
+                                        {% for i in products.paginator.page_range  %}
+                                        {% if products.number == i %}
+                                        <li><span aria-current="page" class="page-numbers current">{{i}}</span></li>
+                                        {% else %}
+                                        <li><a class="page-numbers" href="?page={{i}}&categoryy={{ cat }}&sort={{sort}}&search={{search}}">{{i}}</a></li>
+                                        {% comment %} <li><a class="page-numbers" href="#">3</a></li> {% endcomment %}
+                                        {% endif %}
+                                        {% endfor %}
+
+                                        {% if products.has_next %}
+                                        <li><a class="next page-numbers" href="?page={{products.next_page_number}}&categoryy={{cat}}&sort={{sort}}&search={{search}}">Next</a></li>
+                                        {% endif %}
                                     </ul>
                                 </nav>
+                                {% comment %} {% endfor %} {% endcomment %}
                             </div>
                         </div>
                     </div>

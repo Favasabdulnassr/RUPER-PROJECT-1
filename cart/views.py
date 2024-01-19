@@ -60,7 +60,7 @@ def update_cart(request):
         if request.user.is_authenticated:
             user = request.user
             print(user)
-            userr = CustomUser.objects.filter(email=user).first()
+            userr = CustomUser.objects.filter(email=user.email).first()
             print(userr)
             change = int(request.POST.get('change'))
             print(change)

@@ -23,7 +23,7 @@
 																<div class="subtitle-slider">20%OFF.END MONDAY</div>
 																<h2 class="title-slider">Chair Collection</h2>
 																<div class="description-slider">Save up to $500 on outdoor packages </div>
-																<a class="button-slider button-white" href="shop-grid-left.html">SHOP NOW</a>
+																<a class="button-slider button-white" href="{% url 'shop' %}">SHOP NOW</a>
 															</div>
 														</div>
 													</div>
@@ -42,7 +42,7 @@
 																<div class="subtitle-slider">20%OFF.END MONDAY</div>
 																<h2 class="title-slider">Interior lighting</h2>
 																<div class="description-slider">Save up to $500 on outdoor packages </div>
-																<a class="button-slider button-white" href="shop-grid-left.html">SHOP NOW</a>
+																<a class="button-slider button-white" href="{% url 'shop' %}">SHOP NOW</a>
 															</div>
 														</div>
 													</div>
@@ -61,7 +61,7 @@
 																<div class="subtitle-slider">20%OFF.END MONDAY</div>
 																<h2 class="title-slider">Home office</h2>
 																<div class="description-slider">Save up to $500 on outdoor packages </div>
-																<a class="button-slider button-white" href="shop-grid-left.html">SHOP NOW</a>
+																<a class="button-slider button-white" href="{% url 'shop' %}">SHOP NOW</a>
 															</div>
 														</div>
 													</div>
@@ -84,14 +84,14 @@
 															<div class="bg-banner">
 																<div class="banner-wrapper banners">
 																	<div class="banner-image">
-																		<a href="shop-grid-left.html">
+																		<a href="{% url 'shop' %}">
 																			<img width="571" height="622" src="{% static "media/banner/product-cat-1.jpg" %} "alt="Banner Image">
 																		</a>
 																	</div>
 																	<div class="banner-wrapper-infor">
 																		<div class="info">
 																			<div class="content">
-																				<a class="button button-white" href="shop-grid-left.html">Furniture</a>
+																				<a class="button button-white" href="{% url 'shop' %}">Furniture</a>
 																			</div>
 																		</div>
 																	</div>
@@ -113,14 +113,14 @@
 																				<div class="bg-banner">
 																					<div class="banner-wrapper banners">
 																						<div class="banner-image">
-																							<a href="shop-grid-left.html">
+																							<a href="{% url 'shop' %}">
 																								<img width="406" height="304" src="{% static "media/banner/product-cat-2.jpg" %}" alt="Banner Image">
 																							</a>
 																						</div>
 																						<div class="banner-wrapper-infor">
 																							<div class="info">
 																								<div class="content">
-																									<a class="button button-white" href="shop-grid-left.html">Lighting</a>
+																									<a class="button button-white" href="{% url 'shop' %}">Lighting</a>
 																								</div>
 																							</div>
 																						</div>
@@ -135,14 +135,14 @@
 																				<div class="bg-banner">
 																					<div class="banner-wrapper banners">
 																						<div class="banner-image">
-																							<a href="shop-grid-left.html">
+																							<a href="{% url 'shop' %}">
 																								<img width="406" height="304" src="{% static "media/banner/product-cat-3.jpg" %}" alt="Banner Image">
 																							</a>
 																						</div>
 																						<div class="banner-wrapper-infor">
 																							<div class="info">
 																								<div class="content">
-																									<a class="button button-white" href="shop-grid-left.html">Modern</a>
+																									<a class="button button-white" href="{% url 'shop' %}">Modern</a>
 																								</div>
 																							</div>
 																						</div>
@@ -163,14 +163,14 @@
 																				<div class="bg-banner">
 																					<div class="banner-wrapper banners">
 																						<div class="banner-image">
-																							<a href="shop-grid-left.html">
+																							<a href="{% url 'shop' %}">
 																								<img width="406" height="304" src="{% static "media/banner/product-cat-4.jpg" %}" alt="Banner Image">
 																							</a>
 																						</div>
 																						<div class="banner-wrapper-infor">
 																							<div class="info">
 																								<div class="content">
-																									<a class="button button-white" href="shop-grid-left.html">Accessories</a>
+																									<a class="button button-white" href="{% url 'shop' %}">Accessories</a>
 																								</div>
 																							</div>
 																						</div>
@@ -207,12 +207,12 @@
 																			<div class="hot">Hot</div>
 																		</div>
 																		<div class="product-thumb-hover">
-																			<a href="shop-details.html">
+																			<a href="{% url 'shop' %}">
 																				<img width="600" height="600" src="{% static "media/product/1.jpg" %}" class="post-image" alt="">
 																				<img width="600" height="600" src="{% static "media/product/1-2.jpg" %}" class="hover-image back" alt="">
 																			</a>
 																		</div>		
-																		<div class="product-button">
+																		{% comment %} <div class="product-button">
 																			<div class="btn-wishlist" data-title="Wishlist">
 																				<button class="product-btn">Add to wishlist</button>
 																			</div>
@@ -222,9 +222,9 @@
 																			<span class="product-quickview" data-title="Quick View">
 																				<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
 																			</span>		
-																		</div>
+																		</div> {% endcomment %}
 																	</div>
-																	<div class="products-content">
+																	{% comment %} <div class="products-content">
 																		<div class="contents">
 																			<h3 class="product-title"><a href="shop-details.html">Zunkel Schwarz</a></h3>
 																			<span class="price">$100.00</span>
@@ -234,7 +234,7 @@
 																				</div>			
 																			</div>
 																		</div>
-																	</div>
+																	</div> {% endcomment %}
 																</div>
 															</div>
 														</div>
@@ -246,12 +246,12 @@
 																			<div class="hot">Hot</div>
 																		</div>
 																		<div class="product-thumb-hover">
-																			<a href="shop-details.html">
+																			<a href="{% url 'shop' %}">
 																				<img width="600" height="600" src="{% static "media/product/2.jpg" %}" class="post-image" alt="">
 																				<img width="600" height="600" src="{% static "media/product/2-2.jpg" %}" class="hover-image back" alt="">
 																			</a>
 																		</div>		
-																		<div class="product-button">
+																		{% comment %} <div class="product-button">
 																			<div class="btn-wishlist" data-title="Wishlist">
 																				<button class="product-btn">Add to wishlist</button>
 																			</div>
@@ -261,11 +261,11 @@
 																			<span class="product-quickview" data-title="Quick View">
 																				<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
 																			</span>		
-																		</div>
+																		</div> {% endcomment %}
 																	</div>
-																	<div class="products-content">
+																	{% comment %} <div class="products-content">
 																		<div class="contents">
-																			<h3 class="product-title"><a href="shop-details.html">Namaste Vase</a></h3>
+																			<h3 class="product-title"><a href="{% url 'shop' %}">Namaste Vase</a></h3>
 																			<span class="price">$200.00</span>
 																			<div class="btn-add-to-cart">
 																				<div data-title="Add to cart">
@@ -273,7 +273,7 @@
 																				</div>			
 																			</div>
 																		</div>
-																	</div>
+																	</div> {% endcomment %}
 																</div>
 															</div>
 														</div>
@@ -285,12 +285,12 @@
 																			<div class="hot">Hot</div>
 																		</div>
 																		<div class="product-thumb-hover">
-																			<a href="shop-details.html">
+																			<a href="{% url 'shop' %}">
 																				<img width="600" height="600" src="{% static "media/product/3.jpg" %}" class="post-image" alt="">
 																				<img width="600" height="600" src="{% static "media/product/3-2.jpg" %}" class="hover-image back" alt="">
 																			</a>
 																		</div>		
-																		<div class="product-button">
+																		{% comment %} <div class="product-button">
 																			<div class="btn-wishlist" data-title="Wishlist">
 																				<button class="product-btn">Add to wishlist</button>
 																			</div>
@@ -300,9 +300,9 @@
 																			<span class="product-quickview" data-title="Quick View">
 																				<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
 																			</span>		
-																		</div>
+																		</div> {% endcomment %}
 																	</div>
-																	<div class="products-content">
+																	{% comment %} <div class="products-content">
 																		<div class="contents">
 																			<h3 class="product-title"><a href="shop-details.html">Chair Oak Matt Lacquered</a></h3>
 																			<span class="price">$150.00</span>
@@ -312,7 +312,7 @@
 																				</div>			
 																			</div>
 																		</div>
-																	</div>
+																	</div> {% endcomment %}
 																</div>
 															</div>
 														</div>
@@ -324,12 +324,12 @@
 																			<div class="onsale">-33%</div>
 																		</div>
 																		<div class="product-thumb-hover">
-																			<a href="shop-details.html">
+																			<a href="{% url 'shop' %}">
 																				<img width="600" height="600" src="{% static "media/product/4.jpg" %}" class="post-image" alt="">
 																				<img width="600" height="600" src="{% static "media/product/4-2.jpg" %}" class="hover-image back" alt="">
 																			</a>
 																		</div>		
-																		<div class="product-button">
+																		{% comment %} <div class="product-button">
 																			<div class="btn-wishlist" data-title="Wishlist">
 																				<button class="product-btn">Add to wishlist</button>
 																			</div>
@@ -339,11 +339,11 @@
 																			<span class="product-quickview" data-title="Quick View">
 																				<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
 																			</span>		
-																		</div>
+																		</div> {% endcomment %}
 																	</div>
-																	<div class="products-content">
+																	{% comment %} <div class="products-content">
 																		<div class="contents">
-																			<h3 class="product-title"><a href="shop-details.html">Pillar Dining Table Round</a></h3>
+																			<h3 class="product-title"><a href="{% url 'shop' %}">Pillar Dining Table Round</a></h3>
 																			<span class="price">
 																				<del aria-hidden="true"><span>$150.00</span></del> 
 																				<ins><span>$100.00</span></ins>
@@ -354,7 +354,7 @@
 																				</div>			
 																			</div>
 																		</div>
-																	</div>
+																	</div> {% endcomment %}
 																</div>
 															</div>
 														</div>
@@ -366,12 +366,12 @@
 																			<div class="onsale">-7%</div>
 																		</div>
 																		<div class="product-thumb-hover">
-																			<a href="shop-details.html">
+																			<a href="{% url 'shop' %}">
 																				<img width="600" height="600" src="{% static "media/product/5.jpg" %}" class="post-image" alt="">
 																				<img width="600" height="600" src="{% static "media/product/5-2.jpg" %}" class="hover-image back" alt="">
 																			</a>
 																		</div>
-																		<div class="product-button">
+																		{% comment %} <div class="product-button">
 																			<div class="btn-wishlist" data-title="Wishlist">
 																				<button class="product-btn">Add to wishlist</button>
 																			</div>
@@ -381,13 +381,13 @@
 																			<span class="product-quickview" data-title="Quick View">
 																				<a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
 																			</span>		
-																		</div>
-																		<div class="product-stock">    
+																		</div> {% endcomment %}
+																		{% comment %} <div class="product-stock">    
 																			<span class="stock">Out Of Stock</span>
-																		</div>
+																		</div> {% endcomment %}
 																	</div>
 																	<div class="products-content">
-																		<div class="contents">
+																		{% comment %} <div class="contents">
 																			<h3 class="product-title"><a href="shop-details.html">Amp Pendant Light Large</a></h3>
 																			<span class="price">
 																				<del aria-hidden="true"><span>$150.00</span></del> 
@@ -398,7 +398,7 @@
 																					<a href="#" class="button">Add to cart</a>
 																				</div>			
 																			</div>
-																		</div>
+																		</div> {% endcomment %}
 																	</div>
 																</div>
 															</div>
@@ -423,20 +423,20 @@
 															<div class="bg-banner">
 																<div class="banner-wrapper banners">
 																	<div class="banner-image">
-																		<a href="shop-grid-left.html">
+																		<a href="{% url 'shop' %}">
 																			<img width="825" height="475" src="{% static "media/banner/banner-1.jpg" %}" alt="Banner Image">
 																		</a>
 																	</div>
 																	<div class="banner-wrapper-infor">
 																		<div class="info">
 																			<div class="content">
-																				<a class="link-title" href="shop-grid-left.html">
+																				<a class="link-title" href="{% url 'shop' %}">
 																					<h3 class="title-banner">Let the adventure<br> begin. </h3>
 																				</a>
 																				<div class="banner-image-description">
 																					Sed lectus. Aliquam lorem ante, <br>dapibus in, viverra quis, feugiat a, tellus
 																				</div>
-																				<a class="button button-outline" href="shop-grid-left.html">SHOP NOW</a>
+																				<a class="button button-outline" href="{% url 'shop' %}">SHOP NOW</a>
 																			</div>
 																		</div>
 																	</div>
@@ -453,14 +453,14 @@
 															<div class="bg-banner">
 																<div class="banner-wrapper banners">
 																	<div class="banner-image">
-																		<a href="shop-grid-left.html">
+																		<a href="{% url 'shop' %}">
 																			<img width="571" height="475" src="{% static "media/banner/banner-2.jpg" %}" alt="Banner Image">
 																		</a>
 																	</div>
 																	<div class="banner-wrapper-infor">
 																		<div class="info">
 																			<div class="content">
-																				<a class="link-title" href="shop-grid-left.html">
+																				<a class="link-title" href="{% url 'shop' %}">
 																					<h3 class="title-banner">UP TO <span>20% OFF</span></h3>
 																				</a>
 																				<div class="banner-image-description">

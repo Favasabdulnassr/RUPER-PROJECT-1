@@ -110,8 +110,8 @@
             $('.error').text('');
 
             // Validate product name (at least 4 characters, no spaces or numbers)
-            if (productName.length < 4 || !/^[a-zA-Z]+$/.test(productName) || /^\s+$/.test(productName)) {
-                $('#product_name_error').text('Product name should be at least 4 characters and contain only letters.');
+            if (productName.length < 4 || !/^(?=.*[a-zA-Z])[\w\s]+$/.test(productName)) {
+                $('#product_name_error').text('Product name should be at least 4 characters and contain at least one letter.');
                 event.preventDefault();
                 return;
             }

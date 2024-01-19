@@ -8,6 +8,7 @@ path('shop/',views.shop, name='shop'),
 path('contact/', views.contact, name='contact'),
 path('aboutus/',views.aboutus, name='aboutus'),
 path('wishlist/',views.wishlist,name='wishlist'),
-path('shopdetails/<str:id>',views.shopdetails, name='shopdetails')
+path('shopdetails/<str:id>',views.shopdetails, name='shopdetails'),
+path('search/',views.search,name='search')
 ]
 
