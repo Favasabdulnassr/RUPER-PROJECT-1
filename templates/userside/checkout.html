@@ -7,6 +7,10 @@
     border-color: rgba(0, 128, 0, 0.5); 
     color: black; 
 }
+.custom-dark-bg {
+    background-color:  #dba3a33d; /* Adjust the color code as needed */
+    color: #fff; /* Text color for better visibility */
+  }
 </style>
 {% endblock style %}
 {% block content1%} checkout{% endblock content1 %}
@@ -27,6 +31,61 @@
                     </div>
                 </div>
             </div>
+            <!--================ Coupon Area =================-->
+          <h4 class="col_md-2 ml-4">COUPONS</h4>
+          <div class="col-md-4 border border-dark border-1 p-4 ml-4 mb-5 custom-dark-bg">
+              <div class="d-flex align-items-center justify-content-between">
+                  <h5 class="mr-2 text-black mb-1"><i class='fas fa-tag mt-1' style='font-size:20px'></i> Apply Coupon</h5>
+                  <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                      Apply
+                  </button>
+              </div>
+          </div>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">COUPONS</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form method='POST'>
+                    {% csrf_token %}
+                  <input type="text" id="couponCode" name="couponCode" class="form-control" placeholder="Enter coupon code"/>
+                  <a class="" href="#" onclick="applyCoupon(event)"><button class="btn btn-success ml-3 mt-3 mr-3">APPLY</button></a>
+                  <a class="" href="#" onclick="removeCoupon(event)"><button class="btn btn-danger mt-3 mr-3">REMOVE</button></a> 
+                  <span id="couponError" class="text-danger"></span>
+
+                </form>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>coupon</th>
+                      <th>CODE</th>
+                    </tr>
+                  </thead>
+]                  <tbody>
+                    {% for coupon in coupons %}
+                    <tr>
+                      <td>{{coupon.name}}</td>
+                      <td>{{coupon.code}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <span id="couponError" class="text-danger"></span>
+
 
             <div id="content" class="site-content" role="main">
                 <div class="section-padding">
@@ -61,6 +120,8 @@
                                         </div>
                                         
                                     </form>
+
+                                    
 
                                     <div class="col-xl-4 col-lg-5 col-md-12 col-12">
                                         <div class="checkout-review-order">
@@ -118,6 +179,9 @@
                                                         </ul>
                                                     </div>
                                                 </div>
+
+                                                
+                                               
                                                 <div class="order-total">
                                                     <h2>Total</h2>
                                                     <div class="total-price" id="total1">
@@ -136,13 +200,12 @@
                                                             <p>Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
                                                         </div>
                                                     </li>
-                                                    {% comment %} <li class="payment-method">
-                                                        <input type="radio" class="input-radio" name="payment_method" value="cheque">
-                                                        <label>Check payments</label>
+                                                    <li class="payment-method">
+                                                        <input type="radio" class="input-radio" name="payment_method" value="Wallet">
+                                                        <label>Wallet</label>
                                                         <div class="payment-box">
-                                                            <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
                                                         </div>
-                                                    </li> {% endcomment %}
+                                                    </li> 
                                                     <li class="payment-method">
                                                         <input type="radio" class="input-radio" name="payment_method" value="cod" checked>
                                                         <label>Cash on delivery</label>
@@ -178,7 +241,7 @@
 
 {% block contentscript%}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>    
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
@@ -215,17 +278,16 @@
                     method: "GET",
                     url: "/procceed_to_pay",
                     success:function(response){
-                        console.log('ddddddddddddddddddddddddddddddddddddddddddddddddd')
 
                         var options = {
-                            "key": "rzp_test_VlRkBL8cA77GO1", // Enter the Key ID generated from the Dashboard
+                            "key": "rzp_test_LWQdkfQTzRGUBJ", // Enter the Key ID generated from the Dashboard
                             "amount":response.total_price*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                             "currency": "INR",
                             "name": "Ruper", //your business name
                             "description": "Thank you for buting from us",
                             "image": "https://example.com/your_logo",
                     //      "order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                            "handler": function (responseb){
+                            "handler": function  (responseb){
                                 $.ajax({
                                     type: "POST",
                                     url: "/place_order/",
@@ -265,9 +327,7 @@
                             }
                         };
                         var rzp1 = new Razorpay(options);
-                        console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
                         rzp1.open();
-                        console.log('fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
 
 
                     }
@@ -275,7 +335,7 @@
 
                 
             }
-            else{
+            else if (payment == "cod"){
             $.ajax({
                 type: "POST",
                 url: "/place_order/",
@@ -303,6 +363,33 @@
             });
 
             }
+            else if (payment="Wallet"){
+                $.ajax({
+                    type: "POST",
+                    url: "/place_order/",
+                    data: {
+                        total: total,
+                        address: address,
+                        payment: payment,
+                        csrfmiddlewaretoken: csrf_token,
+                    },
+                    success: function(response) {
+                        console.log("entered");
+                        if (response && response.success === true) {
+                            console.log("order_success");
+                            
+                            // Check if the payment method is Razorpay
+                                location.reload(true);
+                                // Redirect to the success page for other payment methods
+                                window.location.href = '/order_success/';
+                            
+                        } 
+                        else{
+                            alert(" stock is not available or not enough money in wallet")
+                        }
+                    }
+                });
+            }
 
     console.log('After AJAX request');
 
@@ -326,6 +413,111 @@
         // Reload the page
         location.reload(true);  // The true parameter forces a reload from the server
     }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script >
+    function getCSRFToken() {
+        // Implement the logic to retrieve the CSRF token
+        // This might involve selecting an input element or using a different method
+        return document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+      }
+    function applyCoupon(event) {
+        event.preventDefault();
+
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+        var couponCode = $('#couponCode').val();
+        console.log(couponCode);
+
+        $.ajax({
+            url: '../../apply_coupon',
+            type: 'POST',
+            data: {
+                couponCode: couponCode,
+                csrfmiddlewaretoken: getCSRFToken()
+            },
+            success: function (data) {
+                // Handle the response from the server, e.g., update total prices
+                console.log(data);
+                if ('error' in data) {
+                    // Display the error message below the input field
+                    $('#couponError').text(data.error);
+                } else {
+                    $('.coupon-discount').text(data.discount_amount);
+                    console.log(data.discount_amount)
+                    console.log(data.total)
+                   
+                    $('.total-price').text(data.total);
+                    
+                    // Clear the error message on success
+                    $('#couponError').text('');
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Coupon Applied Successfully",
+                        confirmButtonText: 'OK',
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error:', errorThrown,textStatus);
+
+                $('#couponError').text('');
+                Swal.fire({
+                    icon: 'error',
+                    title: "Error when applying coupon please try again",
+                    confirmButtonText: 'OK',
+                });
+            }
+        });
+    }
+    function removeCoupon(event) {
+        event.preventDefault();
+
+        var couponCode = $('#couponCode').val();
+        console.log("clicked")
+    
+        $.ajax({
+            url: '../../remove_coupon',
+            type: 'POST',
+            data: {
+                couponCode: couponCode,
+                csrfmiddlewaretoken: getCSRFToken()
+            },
+            success: function (data) {
+                // Handle the response from the server, e.g., update total prices
+                console.log(data);
+    
+                if ('error' in data) {
+                    // Display the error message below the input field
+                    $('#couponError').text(data.error);
+                } else {
+                    $('.coupon-discount').text(''); // Clear the coupon discount display
+                    $('.total-price').text(data.total);
+    
+                    // Clear the error message on success
+                    $('#couponError').text('');
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Coupon Removed Successfully",
+                        confirmButtonText: 'OK',
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error:', errorThrown);
+    
+                // Display a generic error message below the input field
+                $('#couponError').text('');
+                Swal.fire({
+                    icon: 'error',
+                    title: "Error when removing coupon. please try again",
+                    confirmButtonText: 'OK',
+                });
+            }
+        });
+    }
+    
 </script>
 
 

@@ -18,8 +18,6 @@ def search(request):
     sort = request.GET.get('sort')
     cat_name=''
 
-      
-
     if cat != '0':
         products = Products.objects.filter(is_listed=True,category_id__id=cat).order_by('-id')
         

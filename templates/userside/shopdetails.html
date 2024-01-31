@@ -75,22 +75,24 @@
                                                     </div>
 
                                                 </div>
-                                            {% comment %} <div class="btn-quick-buy" data-title="Wishlist">
+                                            {% comment %} {% comment %} <div class="btn-quick-buy" data-title="Wishlist">
                                                 <a href="#" class="product-btn">Buy It Now</a>
                                             </div> {% endcomment %}
-                                            <div class="btn-wishlist" data-title="Wishlist">
+                                            {% comment %} <div class="btn-wishlist" data-title="Wishlist">
                                                 <a href="#" class="product-btn">Add to wishlist</a>
                                             </div>
                                             <div class="btn-compare" data-title="Compare">
                                                 <a href="#" class="product-btn">Compare</a>
-                                            </div>
+                                            </div> {% endcomment %} 
                                         </div>
                                         
                                         
                                         <div class="product-meta">
                                             <span class="sku-wrapper">SKU: <span class="sku">D2300-3-2-2</span></span>
-                                            <span class="posted-in">Category: <a href="shop-grid-left.html" rel="tag">Furniture</a></span>
-                                            <span class="tagged-as">Tags: <a href="shop-grid-left.html" rel="tag">Hot</a>, <a href="shop-grid-left.html" rel="tag">Trend</a></span>
+                                            {% for category in  products.category_set.all%}
+                                            <span class="posted-in">Category: <a href="" rel="tag"></a>{{category.category.name}}</span>
+                                            {% endfor %}
+                                            <span class="tagged-as">Tags: <a href="" rel="tag">Hot</a>, <a href="" rel="tag">Trend</a></span>
                                         </div>
                                         <div class="social-share">
                                             <a href="#" title="Facebook" class="share-facebook" target="_blank"><i class="fa fa-facebook"></i>Facebook</a>

@@ -28,6 +28,9 @@ urlpatterns = [
     path('',include('userprofile.urls')),
     path('',include('order.urls')),
     path('',include('Dashboard.urls')),
+    path('',include('coupon.urls')),
+    path('',include('wallet.urls')),
+    path('',include('products.urls')),
 
 ]
 

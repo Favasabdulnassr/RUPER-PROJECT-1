@@ -119,9 +119,7 @@ def editproduct(request,id):
 
 def delete_images(request):
     if request.method == 'POST':
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         image_ids = request.POST.getlist("image_ids[]")
-        print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb') 
 
         print(image_ids) 
         try:
@@ -129,14 +127,11 @@ def delete_images(request):
             for image_id in image_ids:
                  print(type(image_id))
 
-            print('cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')
             # Delete images based on the received IDs
             images_to_delete = Image.objects.filter(pk__in=image_ids)
-            print('ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
             print(images_to_delete)
             for image in images_to_delete:
                 image.delete()
-                print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
 
             return JsonResponse({'message': 'Images deleted successfully'}, status=200)
 
@@ -356,9 +351,16 @@ def order_details(request,id):
          if option:
             order.status = option
             order.save()
-
     statuses=['Order confirmed','Cancelled','Delivered']
     return render(request,'adminside/order_details.html',{'order':order, 'statuses':statuses})
+
+
+
+    
+# @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+# @user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
+# def add_product_offers(request):
+    
 
 
 

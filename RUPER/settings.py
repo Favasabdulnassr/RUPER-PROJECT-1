@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'userprofile',
     'order',
     'Dashboard',
+    'coupon',
+    'wallet',
 ]
 
 MIDDLEWARE = [
@@ -156,3 +158,4 @@ AUTH_USER_MODEL = 'userAuthentication.CustomUser'
 
 LOGIN_URL = "home"
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+

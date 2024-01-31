@@ -6,6 +6,9 @@ from decimal import Decimal
 from userAuthentication.models import CustomUser
 from userprofile.models import Address
 from django.contrib import messages
+from coupon.models import Coupons, CouponUsage
+from django.utils import timezone
+from datetime import timedelta, datetime
 
 
 def add_cart(request):
@@ -117,19 +120,27 @@ def cart(request):
 
 def checkout(request):
     if request.user.is_authenticated:
-        userr = request.user
-        user = CustomUser.objects.filter(email=userr.email).first()
-        address = Address.objects.filter(user=user)
-        cart_items = Cart.objects.filter(customuser=user)
-        total = sum(cart_items.values_list('cart_price',flat=True))
-        context = {
-            'addresses': address,
-            'cart_items': cart_items,
-            'total': total
-        }
-        return render(request, 'userside/checkout.html',context)
-    
-    return redirect ('signin')
+        user = request.user
+        cart_item = Cart.objects.filter(customuser=user)
+        if cart_item.exists():
+
+            userr = request.user
+            user = CustomUser.objects.filter(email=userr.email).first()
+            address = Address.objects.filter(user=user)
+            cart_items = Cart.objects.filter(customuser=user)
+            total = sum(cart_items.values_list('cart_price',flat=True))
+            coupons = Coupons.objects.filter(is_active=True).filter(expiration_date__gte=timezone.now())
+            context = {
+                'coupons':coupons,
+                'addresses': address,
+                'cart_items': cart_items,
+                'total': total
+            }
+            return render(request, 'userside/checkout.html',context)
+        else:
+            return redirect('cart')
+    else:
+        return redirect ('signin')
 
 
 def edit_address(request,id):
@@ -165,5 +176,79 @@ def add_address(request):
     
     return render(request,'userprofile/addAddress.html')
 
+def apply_coupon(request):
+    if request.method == 'POST':
+        email = request.user.email
+        print(email,'sssssssssssssssssssssss')
+        user = CustomUser.objects.get(email=email)
+        print(user,'aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
+        coupon_code = request.POST.get('couponCode')
+        print(coupon_code)
+        coupon_check = Coupons.objects.filter(code=coupon_code ,is_active=True).first()
+        print(coupon_check)
+        if coupon_check:
+            if CouponUsage.objects.filter(user=user,coupon=coupon_check).exists():
+                return JsonResponse({"error": "Coupon already applied"})
+            else:
+                if coupon_check.used_count < coupon_check.usage_limit:
+                    cart_total = sum(Cart.objects.filter(customuser=user).values_list("cart_price",flat=True))
+
+                    if cart_total >= coupon_check.minimum_purchase:
+                        if coupon_check.expiration_date < datetime.now().date():
+                            return JsonResponse({"error":"coupon expired"})
+                        
+                        total = cart_total - coupon_check.discount_value
+                        request.session['final_amount'] = int(total)
+                        request.session['coupon_Code']  = coupon_code
+
+                        response_data = {
+                            "success":"added",
+                            "total" : total,
+                            "coupon_code" : coupon_code,
+                            "discount_amount" : coupon_check.discount_value
+
+                        }
+                        coupon_check.used_count +=1
+                        coupon_check.save()
+
+                        CouponUsage.objects.create(user=user,coupon = coupon_check)
+
+                        return JsonResponse(response_data)
+                    
+                    else:
+                        return JsonResponse({"error": f"Minimum purchase amount of {round(coupon_check.minimum_purchase)} required"})
+                    
+                else:
+
+                    return JsonResponse({"error":"This code has reached this maximum limit"})
+        else:
+            return JsonResponse({"error":"invalid coupon"})
+    else:
+        return JsonResponse({"error":"invalid request"})       
+    
+
+def remove_coupon(request):    
+    email = request.user.email
+    user = CustomUser.objects.get(email=email)
+
+    coupon_code = request.POST.get("couponCode")
+    coupon_check = Coupons.objects.filter(code=coupon_code,is_active=True).first()
+    if coupon_check:
+            usage_check = CouponUsage.objects.filter(user=user,coupon=coupon_check).first()
+            print(usage_check.ordered)
+            if usage_check:
+                if usage_check.ordered == 1:
+                    return JsonResponse({"error":"This Coupon is already applied"})
+                else:
+                    coupon_check.used_count -= 1
+                    coupon_check.save()
+                    usage_check.delete()
+    total = sum(Cart.objects.filter(customuser=user).values_list('cart_price',flat=True))   
+    if 'final_amount' in request.session:
+        del request.session['final_amount']
+
+    response_data= ({"success":"removed",'total':total})
+    
+    return JsonResponse(response_data)    
 

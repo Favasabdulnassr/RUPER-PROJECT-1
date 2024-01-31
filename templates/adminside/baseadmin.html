@@ -34,6 +34,10 @@
 
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
 
+    {% block style %}
+
+    {% endblock style %}
+
 </head>
 
 
@@ -65,17 +69,19 @@
                     </li>
                     <li {% block content6 %}{%endblock%}>
                         <a href="{% url 'brandtable' %}"><i class="menu-icon fa fa-code-fork"></i>Brands</a>                      
-                    {% comment %} </li>
+                   </li>
                     <li {% block content8 %}{%endblock%}>
-                        <a href=""><i class="menu-icon fa fa-gift"></i>Coupons</a>                     
+                        <a href="{% url 'coupons' %}"><i class="menu-icon fa fa-gift"></i>Coupons</a>                     
                     </li>
+                    
                     <li {% block content9 %}{%endblock%}>
-                        <a href=""><i class="menu-icon fa fa-desktop"></i>Banners</a>
+                        <a href="{% url 'product_offers' %}"><i class="menu-icon fa fa-desktop"></i>Product offers</a>
                     </li>
                     
                     <li {% block content11 %}{%endblock%}>
-                        <a href=""><i class="menu-icon fa fa-ticket"></i>Offers</a>
+                        <a href=""><i class="menu-icon fa fa-ticket"></i>category Offers</a>
                     </li>
+                     {% comment %} 
                     <li {% block content7 %}{%endblock%} >
                         <a href="" style='color:red;'><i style='color:red;' class="menu-icon fa fa-trash"></i>Trash</a>
                     </li> {% endcomment %}

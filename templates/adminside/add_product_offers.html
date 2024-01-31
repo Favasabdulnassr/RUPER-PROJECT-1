@@ -1,0 +1,90 @@
+{% extends 'adminside/baseadmin.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+  .h-50 {
+    height: 96%!important;
+  }
+  </style>
+{% endblock style %}
+
+{% block content%}
+
+<div class="col-md-12">
+        <div class="card-header">
+            <strong class="card-title">Add a new product offer</strong>
+            
+        </div>
+        <div class="card-body">
+          <form action='' method='POST' id='productForm'>
+            {% csrf_token %}
+             <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">Choose Product</label>
+                <div class="col-sm-10">
+                  <select class="form-select" aria-label="Default select example" name="product" required>
+                    <option disabled selected> Select a Product</option>
+                    {% for product in products %}
+                    <option value="{{product.id}}">{{product.products_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Discount Percentage</label>
+                <div class="col-sm-6">
+                  <input type="number" min="0" class="form-control" width="100px" name="discount" id="discount" required >
+                  <span class="error-message text-danger mt-2" id="price-error"></span>
+                </div>
+              </div>
+              <br><br>
+              <div class="row ">
+                <label class="col-sm-2 col-form-label">Submit</label>
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary">Add Product Offer</button>
+                  <a href="{% url 'product_offers' %}" class="btn btn-danger btn-rounded ml-3 h-50">Cancel</a>
+
+                </div>
+              </div>
+            </form>
+            
+              {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="text {% if message.tags == 'info' %}text-success{% else %}text-danger{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $("#productForm").validate({
+      rules: {
+        discount: {
+          required: true,
+          range: [1, 99],
+        },
+      },
+      messages: {
+        discount: {
+          required: "Please enter the discount percentage",
+          range: "Discount percentage must be between 1 and 99",
+        },
+      },
+      errorClass: "is-invalid",
+      errorPlacement: function(error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      }
+    });
+  });
+</script>
+
+{% endblock content %}

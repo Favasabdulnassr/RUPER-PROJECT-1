@@ -1,0 +1,82 @@
+{% extends 'adminside/baseadmin.html' %}
+{% load static %}
+{% block content9    %}class='active'{%endblock%}
+{% block content %}
+
+<div class="col-md-12">
+    {% comment %} <div class="card"> {% endcomment %}
+        {% comment %} <div class="card-header">
+            <strong class="card-title">Data Table</strong>
+        </div> {% endcomment %}
+        <div class="card-body">
+            <div class="mb-2">
+                <a href="{% url 'add_product_offers' %}" class="btn btn-primary">Add Product Offer</a>
+            </div>
+            <table id="product-table" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>price</th>
+                        <th>product Discount</th>
+                        <th>Offer price</th>
+                        <th>Cancel offer</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>
+                            <img src="{{ product.image_set.first.image.url }}" alt="{{ product.products_name }}" style="max-width: 100px; max-height: 100px;">
+                        </td>
+                        <td>{{product.products_name}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.product_offer}}</td>
+                        <td>{{prod.discounted_price}}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="confirmCancellation('{{ product.id }}')">Cancel</button>
+                        </td>   
+                        <td class='row  ml-0 mr-0 ' > 
+                            <a href="../../edit_product_offers/{{product.id}}"><i class="fa fa-pencil ml-3"></i></a>
+
+                        </td>
+
+                    </tr>
+                  {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    function confirmCancellation(productId) {
+        Swal.fire({
+            title: 'Confirm Cancel Offer',
+            text: 'Are you sure you want to cancel the offer for this product?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Cancelled!',
+                    text: 'The offer has been cancelled.',
+                    icon: 'success',
+                    timer: 2000, // 2 seconds
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(() => {
+                    // Redirect after the delay
+                    window.location.href = "cancel_product_offers/" + productId;
+                });
+            }
+        });
+    }
+</script>
+{% endblock content%}
