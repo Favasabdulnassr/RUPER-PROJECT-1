@@ -29,7 +29,7 @@ def add_product_offers(request):
         product = Products.objects.get(id=product_name)
         product.product_offer = product_discount
         product.save()
-        return redirect("products_offers")
+        return redirect("product_offers")
     
     return render(request,'adminside/add_product_offers.html',{"products":products})
 
@@ -58,4 +58,5 @@ def cancel_product_offer(request,id):
     item.product_offer = 0
     item.save()
     return redirect('product_offers')
+ 
  

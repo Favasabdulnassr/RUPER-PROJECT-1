@@ -27,7 +27,7 @@ def add_cart(request):
             cart, created = Cart.objects.get_or_create(
                 customuser=request.user, product=product
             )
-            price = product.price
+            price = product.discounted_price()
             cart.quantity = quantity
             cart.cart_price = price * Decimal(quantity)
             cart.save()
@@ -45,7 +45,6 @@ def add_cart(request):
 def remove_item_cart(request):  
     if request.method == "POST":
         item_id = request.POST.get('item_id')
-        print(item_id)
         try:
             cart_item = Cart.objects.get(id=item_id)
             cart_item.delete()
@@ -62,11 +61,8 @@ def update_cart(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
             user = request.user
-            print(user)
             userr = CustomUser.objects.filter(email=user.email).first()
-            print(userr)
             change = int(request.POST.get('change'))
-            print(change)
             cart_id = int(request.POST.get('productId'))
             cart = Cart.objects.get(id=cart_id)
             
@@ -84,7 +80,7 @@ def update_cart(request):
                     cart.quantity = 1
                     cart.save()    
 
-            prodTotal = product_obj.price * cart.quantity
+            prodTotal = product_obj.discounted_price() * cart.quantity
             cart.cart_price = prodTotal
             cart.save()     
             cart_items = Cart.objects.filter(customuser=userr)
@@ -247,7 +243,7 @@ def remove_coupon(request):
     total = sum(Cart.objects.filter(customuser=user).values_list('cart_price',flat=True))   
     if 'final_amount' in request.session:
         del request.session['final_amount']
-
+        
     response_data= ({"success":"removed",'total':total})
     
     return JsonResponse(response_data)    

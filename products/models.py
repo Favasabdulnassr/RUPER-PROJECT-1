@@ -24,27 +24,16 @@ class Products(models.Model):
     stock = models.PositiveIntegerField()
     brand_id = models.ForeignKey(Brands,on_delete=models.CASCADE)
     is_listed = models.BooleanField(default=False)
-    product_offer = models.DecimalField(max_digits=5, decimal_places=2,default=0)
-    category_offer = models.DecimalField(max_digits=5, decimal_places=2,default=0)
+    product_offer = models.PositiveIntegerField(default = 0)
 
-    def discount(self):
-        discount_percentage = 0
-
-        if self.product_offer > self.category_offer:
-
-            discount_percentage = self.product_offer
-        else:
-            discount_percentage = self.category_offer
-
-        return discount_percentage         
-    
 
     def discounted_price(self):
-        if self.discount() > 0:
-            return  self.price - ((self.price * self.discount())/100)
+        discount_percentage = self.product_offer
+        if discount_percentage > 0:
+            return self.price - ((self.price * discount_percentage) / 100)
         else:
-            return self.price   
-  
+            return self.price
+        
 
     def __str__(self):
         return self.products_name

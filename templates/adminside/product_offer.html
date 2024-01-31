@@ -32,8 +32,8 @@
                         </td>
                         <td>{{product.products_name}}</td>
                         <td>{{product.price}}</td>
-                        <td>{{product.product_offer}}</td>
-                        <td>{{prod.discounted_price}}</td>
+                        <td>{{product.product_offer}}%</td>
+                        <td>{{product.discounted_price}}</td>
                         <td>
                             <button class="btn btn-danger" onclick="confirmCancellation('{{ product.id }}')">Cancel</button>
                         </td>   
@@ -73,7 +73,7 @@
                     showConfirmButton: false
                 }).then(() => {
                     // Redirect after the delay
-                    window.location.href = "cancel_product_offers/" + productId;
+                    window.location.href = "../../cancel_product_offers/" + productId;
                 });
             }
         });

@@ -10,7 +10,7 @@
                 <div class="section-container">
                     <div class="content-title-heading">
                         <h1 class="text-title-heading">
-                            {{products.products_name}}
+                                {{products.products_name}}
                         </h1>
             </div>
 
@@ -49,20 +49,35 @@
                                     </div>
                                 </div>
                                     <div class="product-info col-lg-5 col-md-12 col-12 ">
-                                        <h1 class="title">{{products.products_name}}</h1>
+                                        {% if products.product_offer == 0 %}
+                                            <h1 class="title">{{products.products_name}}</h1>
+                                        {% else %}
+                                            <h1 class="title">{{products.products_name}}-{{products.product_offer}}%OFF</h1>
+                                        {% endif %}
+
+
                                         <span class="price">
                                             {% comment %} <del aria-hidden="true"><span>$100.00</span></del>  {% endcomment %}
-                                            <ins><span>{{products.price}}</span></ins>
+                                            {% if products.product_offer == 0 %}
+                                                <ins><span>{{products.price}}</span></ins>
+                                            {% else %}  
+                                            <ins><span>{{products.discounted_price}}</span></ins>
+                                            <s><span>{{products.price}}</span></s>
+                                            {% endif %}
+
+
+
+
                                         </span>
-                                        <div class="rating">
+                                        {% comment %} <div class="rating">
                                             <div class="star star-5"></div>
                                             <div class="review-count">
                                                 (3<span> reviews</span>)
                                             </div>
-                                        </div>
-                                        {% comment %} <div class="description">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                                         </div> {% endcomment %}
+                                       <div class="description">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                        </div> 
                                         
                                         <div class="buttons">
                                             <div class="buttons">

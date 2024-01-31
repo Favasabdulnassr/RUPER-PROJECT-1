@@ -215,8 +215,21 @@
                                                         </div>
                                                         <div class="products-content">
                                                             <div class="contents text-center">
-                                                                <h3 class="product-title"><a href=>{{product.products_name}}</a></h3>
-                                                                <span class="price">₹{{product.price}}</span>
+                                                                    {% if product.product_offer == 0 %}
+                                                                    <h3 class="product-title"><a href=>{{product.products_name}}</a></h3>
+                                                                {% else %}
+                                                                    <h3 class="product-title"><a href=>{{product.products_name}}- {{product.product_offer}}%OFF</a></h3>
+                                                                {% endif %}
+
+    
+                                                                {% if product.product_offer == 0 %}
+                                                                    <span class="price">₹{{product.price}}</span>
+                                                                {% else %}
+                                                                    <span class="price">₹{{product.discounted_price}}</span><br>
+                                                                    <s class="price">₹{{product.price}}</s>
+
+                                                                {% endif %}
+
                                                             </div>
                                                         </div>
                                                     </div>
