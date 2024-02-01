@@ -25,7 +25,6 @@ class Orders(models.Model):
     def generate_order_id(self):     
         return str(uuid.uuid4().hex)[:8]
     
-    
     def __str__(self) -> str:
         return f"{self.user}'s order details"
     

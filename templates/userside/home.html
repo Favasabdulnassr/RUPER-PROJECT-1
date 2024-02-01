@@ -617,4 +617,30 @@
 				</div><!-- #main-content -->
 			</div>
 
+
+		{% block contentscript%}
+		<script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+			// Check if a success message is present in Django messages
+			document.addEventListener('DOMContentLoaded', function () {
+				// Check if a success message is present in Django messages
+				{% if messages %}
+					{% for message in messages %}
+						{% if message.tags == 'success' %}
+							// Display SweetAlert for successful user creation
+							Swal.fire({
+								title: 'Success!',
+								text: '{{ message }}',
+								icon: 'success',
+								confirmButtonText: 'OK'
+							});
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			});
+		</script>
+
+		{% endblock contentscript%}
+
 {% endblock content %}

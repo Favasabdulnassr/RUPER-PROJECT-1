@@ -6,6 +6,7 @@ from products.models import *
 import random
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
+from wallet.models import Wallet
 
 # Create your views here.
 
@@ -68,7 +69,18 @@ def signup(request):
         phone_number = request.POST.get('phone1')
         password = request.POST.get('password1')
         request.session['recipient_email'] = email
-    
+        refferal_id = request.POST.get('referral_id')
+        reffered_user = None
+        print(refferal_id)
+        if refferal_id:
+            reffered_user = CustomUser.objects.filter(referal_id=refferal_id).first()
+            if reffered_user is None:
+               messages.error(request,'Invalid referal Id')
+               return render(request,'userside/signup.html',{'messages': messages.get_messages(request)})
+            else:
+              pass
+        else:
+            pass        
         
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "email is already exists")
@@ -80,9 +92,15 @@ def signup(request):
             return render(request,'userside/signup.html',{'messages': messages.get_messages(request)})
         
         else:
-            CustomUser.objects.create_user(username=email,first_name = first_name, email=email, phone_number=phone_number, password=password)
-            send_6_digit_otp_email(request)
-            return redirect('otp_verification')
+            if reffered_user:
+                CustomUser.objects.create_user(username=email,first_name = first_name, email=email, phone_number=phone_number, password=password,reffered=1,reffered_id=refferal_id )
+                send_6_digit_otp_email(request)
+                return redirect('otp_verification')
+            else:
+                CustomUser.objects.create_user(username=email,first_name = first_name, email=email, phone_number=phone_number, password=password)
+                send_6_digit_otp_email(request)
+                return redirect('otp_verification')
+
     else:
         return render(request, 'userside/signup.html')    
     
@@ -102,10 +120,47 @@ def otp_verification(request):
         print('ddddddddddddddddddddddddddddddd')
         if (datetime.now()<=expire and otp==otp1):
             user.is_listed=True
+            if user.reffered == 1:
+                Wallet.objects.create(
+                    user = user,
+                    amount = 100,
+                    balance = 100,
+                    transaction_type = 'Credit',
+                    transaction_details = "Added money by created account using refferal",
+
+                )
+
+                reffered_id = user.reffered_id
+                print('sssss',reffered_id)
+                reffered_usssser = CustomUser.objects.get(referal_id=reffered_id)
+                reffered_user = Wallet.objects.filter(user=reffered_usssser).order_by("-id").first()
+
+                if reffered_user:
+                    balance = reffered_user.balance
+                else:
+                    balance = 0
+
+                new_balance = balance + 100
+
+                Wallet.objects.create(
+                user = reffered_usssser,
+                amount = 100,
+                balance = new_balance,
+                transaction_type = 'Credit',
+                transaction_details = "Added money by user created by your refferal",
+
+                )
+
+
+                
+
+
             user.save()
+
             print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
             messages.success(request, 'user created successfully')
-            return redirect('signup')
+            return redirect('home')
+        
         elif(datetime.now()<=expire and otp != otp1):
             messages.error(request,'invalid otp')
             return redirect('otp_verification')
