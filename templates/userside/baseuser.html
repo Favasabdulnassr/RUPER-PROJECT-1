@@ -212,7 +212,7 @@
 																		<div class="password">
 																			<input class="input-text" required="required" type="password" name="password" id="password" placeholder="Password"/>
 																		</div>
-																		<div class="rememberme-lost">
+																		{% comment %} <div class="rememberme-lost">
 																			<div class="rememberme">
 																				<input name="rememberme" type="checkbox" id="rememberme" value="forever"/>
 																				<label for="rememberme" class="inline">Remember me</label>
@@ -220,42 +220,14 @@
 																			<div class="lost_password">
 																				<a href="forgot-password.html">Lost your password?</a>
 																			</div>
-																		</div>
+																		</div> {% endcomment %}
 																		<div class="button-login">
 																			<input type="submit" class="button" name="login" value="Login"/>
 																		</div>
 																		<a href="{% url 'signup' %}"><div class="button-next-reregister">Create An Account</div></a>																	</div>						
 																</form>
 															</div>
-														    {% comment %} <div class="form-register">
-																<!-- Inside the form with class "form-register" -->
-																<form method="post" action= "{% url 'signup' %}" class="register">
-																	{% csrf_token %}
-																	<h2>REGISTER</h2>
-																	<div class="content">
-																		<div class="username">
-																			<input type="text" class="input-text" placeholder="Username" name="username" id="username"/>
-																		</div>
-																		<div class="email">
-																			<input type="email" class="input-text" placeholder="Email" name="email" id="reg_email" value=""/>
-																		</div>
-																		<div class="password">
-																			<input type="password" class="input-text" placeholder="Password" name="password" id="reg_password"/>
-																		</div>
-																		<div class="confirm-password">
-																			<input type="password" class="input-text" placeholder="Confirm Password" name="confirm_password" id="confirm_password"/>
-																		</div>
-																		<div class="phone-number">
-																			<input type="tel" class="input-text" placeholder="Phone Number" name="phone_number" id="phone_number"/>
-																		</div>
-																		<div class="button-register">
-																			<input type="submit" class="button" name="register" value="Register"/>
-																		</div>
-																		<div class="button-next-login">Already have an account</div>
-																	</div>
-																</form>
-
-															</div>  {% endcomment %}
+														  
 														</div>
 													</div>
 												</div>
@@ -331,16 +303,16 @@
 											<div class="block-content">
 												<ul>
 													<li>
-														<a href="page-contact.html">616.774.0561</a>
+														<a href="">616.774.0561</a>
 													</li>
 													<li>
-														<a href="page-contact.html">866.453.4748</a>
+														<a href="">866.453.4748</a>
 													</li>
 													<li>
-														<a href="page-contact.html">HR Fax: 810.222.5439</a>
+														<a href="">HR Fax: 810.222.5439</a>
 													</li>
 													<li>
-														<a href="page-contact.html">sales@ruperfurniture.com</a>
+														<a href="">sales@ruperfurniture.com</a>
 													</li>
 												</ul>
 											</div>
@@ -348,10 +320,10 @@
 
 										<div class="block block-social">
 											<ul class="social-link">
-												<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-												<li><a href="#"><i class="fa fa-instagram"></i></a></li>
-												<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-												<li><a href="#"><i class="fa fa-behance"></i></a></li>
+												<li><a href=""><i class="fa fa-twitter"></i></a></li>
+												<li><a href=""><i class="fa fa-instagram"></i></a></li>
+												<li><a href=""><i class="fa fa-dribbble"></i></a></li>
+												<li><a href=""><i class="fa fa-behance"></i></a></li>
 											</ul>
 										</div>
 									</div>
@@ -371,22 +343,22 @@
 											<div class="block-content">
 												<ul>
 													<li>
-														<a href="page-about.html">Sale</a>
+														<a href="">Sale</a>
 													</li>
 													<li>
-														<a href="page-about.html">Quick Ship</a>
+														<a href="">Quick Ship</a>
 													</li>
 													<li>
-														<a href="page-about.html">New Designs</a>
+														<a href="">New Designs</a>
 													</li>
 													<li>
-														<a href="page-about.html">Accidental Fabric Protection</a>
+														<a href="">Accidental Fabric Protection</a>
 													</li>
 													<li>
-														<a href="page-about.html">Furniture Care</a>
+														<a href="">Furniture Care</a>
 													</li>
 													<li>
-														<a href="page-about.html">Gift Cards</a>
+														<a href="">Gift Cards</a>
 													</li>
 												</ul>
 											</div>
@@ -397,7 +369,7 @@
 											<h2 class="block-title">Newsletter</h2>
 											<div class="block-content">
 												<div class="newsletter-text">Enter your email below to be the first to know about new collections and product launches.</div>
-												<form action="#" method="post" class="newsletter-form">
+												<form action="" method="" class="newsletter-form">
 													<input type="email" class="bg-white" name="your-email" value="" size="40" placeholder="Email address">
 													<span class="btn-submit">
 														<input type="submit" value="Subscribe">
@@ -405,9 +377,7 @@
 												</form>
 											</div>
 										</div>
-										<div class="block block-image">
-											<img width="309" height="32" src="{% static "media/payments.png" %}" alt="">
-										</div>
+										
 									</div>
 								</div>
 							</div>
@@ -445,13 +415,13 @@
 							<div class="close-search">Cancel</div>
 						</div>
 						
-					</div>
+					</div> 
 				</form>	
 			</div>	
 		</div>
 
 		<!-- Wishlist -->
-		<div class="wishlist-popup">
+		{% comment %} <div class="wishlist-popup">
 			<div class="wishlist-popup-inner">
                 <div class="wishlist-popup-content">
                     <div class="wishlist-popup-content-top">
@@ -533,10 +503,10 @@
                     </div>
                 </div>
             </div>
-		</div>
+		</div> {% endcomment %}
 
 		<!-- Compare -->
-		<div class="compare-popup">
+		{% comment %} <div class="compare-popup">
 		    <div class="compare-popup-inner">
 		        <div class="compare-table">
 		            <div class="compare-table-inner">
@@ -648,10 +618,10 @@
 		            </div>
 		        </div>
 		    </div>
-		</div>
+		</div> {% endcomment %}
 
 		<!-- Quickview -->
-		<div class="quickview-popup">
+		{% comment %} <div class="quickview-popup">
 			<div id="quickview-container"> 
 				<div class="quickview-container"> 
 					<a href="#" class="quickview-close"></a> 
@@ -720,15 +690,12 @@
 					<div class="clearfix"></div> 
 				</div> 
 			</div>
-		</div>
+		</div> {% endcomment %}
 
-		{% comment %} <!-- Page Loader -->
-		<div class="page-preloader">
-	    	<div class="loader">
-	    		<div></div>
-	    		<div></div>
-	    	</div>
-	    </div> {% endcomment %}
+	 <!-- Page Loader -->
+	 {% block load %}
+		
+    {% endblock load %}
 
         <!-- Dependency Scripts -->
 		{% block contentscript%}

@@ -25,4 +25,7 @@ urlpatterns = [
     path('orders',views.orders,name='orders'),
     path('order_details/<str:id>/',views.order_details,name='order_details'),
     path('delete_images/',views.delete_images,name='delete_images'),
+    path('banner/',views.banners,name='banners'),
+    path('add_banner/',views.add_banner,name='add_banner'),
+    path('delete_banner/<str:id>',views.delete_banner,name='delete_banner  ')
 ]

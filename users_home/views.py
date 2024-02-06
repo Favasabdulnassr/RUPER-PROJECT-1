@@ -6,17 +6,44 @@ from cart.models import Cart
 from products.models import Products,Category
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
+from adminPanel.models import Banner
 
 
 # Create your views here.
 def Home(request):
-    return render(request,'userside/home.html')
+    product = Products.objects.all().order_by("pk")
+    banner = Banner.objects.all().order_by("pk")
+
+    first_product = product[0]
+    first_product_image = first_product.image_set.all()
+    first_image =  first_product_image[0]
+
+    second_product = product[1]
+    second_product_image = second_product.image_set.all()
+    second_image = second_product_image[0]
+
+    third_product = product[2]
+    third_product_image = third_product.image_set.all()
+    third_image = third_product_image[0]
+
+    all_images = Image.objects.filter(product_id__in=product).order_by("-id")
+
+
+
+    return render(request,'userside/home.html',{
+        'products': product,
+        'first_image':first_image,
+        'second_image':second_image,
+        'all_images' : all_images,
+        'banner':banner,
+        'third_image':third_image,
+       
+    })
 
 def search(request):
     search = request.GET.get('search', '')
     cat = request.GET.get('categoryy', '0')
     sort = request.GET.get('sort')
-    cat_name=''
 
     if cat != '0':
         products = Products.objects.filter(is_listed=True,category_id__id=cat).order_by('-id')

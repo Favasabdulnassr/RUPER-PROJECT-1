@@ -1,0 +1,38 @@
+{% extends 'adminside/baseadmin.html' %}
+{% load static %}
+
+{% block content%}
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Add Banner</strong>
+        </div>
+        <div class="card-body">
+            <form method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+               
+                <div class="form-group">
+                    <label for="product_image">Banner Image</label>
+                    <input type="file" class="form-control-file" id="product_image" name="banner_image" accept="image/*">
+                    <span id="image_error" class="error" style="color: red;"></span>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add banner </button>
+            </form>
+              {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="text {% if message.tags == 'info' %}text-success{% else %}text-danger{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

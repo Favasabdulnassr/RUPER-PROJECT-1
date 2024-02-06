@@ -158,26 +158,24 @@
                                 <div class="products-topbar clearfix">
                                     <div class="products-topbar-left">
                                         <div class="products-count">
-                                            Showing all 21 results
                                         </div>
                                     </div>
                                     <div class="products-topbar-right">
                                         <div class="products-sort dropdown">
-                                            <span class="sort-toggle dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Default sorting</span>
+                                            <span class="sort-toggle dropdown-toggle" data-toggle="dropdown" aria-expanded="true">sorting</span>
                                             <ul class="sort-list dropdown-menu" x-placement="bottom-start">
-                                                <li class="active"><a href="#">Default sorting</a></li>
                                                 <li><a href="../../shop?sort=price_low_to_high">Sort by price: low to high</a></li>
                                                 <li><a href="../../shop?sort=price_high_to_low">Sort by price: high to low</a></li>
                                             </ul>
                                         </div>
-                                        <ul class="layout-toggle nav nav-tabs">
+                                        {% comment %} <ul class="layout-toggle nav nav-tabs">
                                             <li class="nav-item">
                                                 <a class="layout-grid nav-link active" data-toggle="tab" href="#layout-grid" role="tab"><span class="icon-column"><span class="layer first"><span></span><span></span><span></span></span><span class="layer middle"><span></span><span></span><span></span></span><span class="layer last"><span></span><span></span><span></span></span></span></a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="layout-list nav-link" data-toggle="tab" href="#layout-list" role="tab"><span class="icon-column"><span class="layer first"><span></span><span></span></span><span class="layer middle"><span></span><span></span></span><span class="layer last"><span></span><span></span></span></span></a>
                                             </li>
-                                        </ul>
+                                        </ul> {% endcomment %}
                                     </div>
                                 </div>
 
@@ -198,20 +196,7 @@
                                                                     <img width="600" height="600" src="{{product.image_set.first.image.url}}" class="hover-image back" alt="">
                                                                 </a>
                                                             </div>		
-                                                            {% comment %} <div class="product-button">
-                                                                <div class="btn-add-to-cart" data-title="Add to cart">
-                                                                    <a rel="nofollow" href="#" class="product-btn button">Add to cart</a>
-                                                                </div>
-                                                                <div class="btn-wishlist" data-title="Wishlist">
-                                                                    <button class="product-btn">Add to wishlist</button>
-                                                                </div>
-                                                                <div class="btn-compare" data-title="Compare">
-                                                                    <button class="product-btn">Compare</button>
-                                                                </div>
-                                                                <span class="product-quickview" data-title="Quick View">
-                                                                    <a href="#" class="quickview quickview-button">Quick View <i class="icon-search"></i></a>
-                                                                </span>		
-                                                            </div> {% endcomment %}
+                                                           
                                                         </div>
                                                         <div class="products-content">
                                                             <div class="contents text-center">

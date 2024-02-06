@@ -33,7 +33,7 @@ def login(request):
         else:
             messages.error(request, "invalid password or username") 
             print('password error')
-            return render(request, "userside/home.html") 
+            return redirect('home')
           
     else:
         print(' error')
@@ -66,7 +66,7 @@ def signup(request):
     if request.method == "POST":
         first_name = request.POST.get('first_name')
         email = request.POST.get('email1')
-        phone_number = request.POST.get('phone1')
+        phone_number = request.POST.get('phone1'),
         password = request.POST.get('password1')
         request.session['recipient_email'] = email
         refferal_id = request.POST.get('referral_id')
@@ -117,7 +117,6 @@ def otp_verification(request):
     user=CustomUser.objects.filter(email=email).first()
 
     if request.method=='POST':
-        print('ddddddddddddddddddddddddddddddd')
         if (datetime.now()<=expire and otp==otp1):
             user.is_listed=True
             if user.reffered == 1:
@@ -131,7 +130,6 @@ def otp_verification(request):
                 )
 
                 reffered_id = user.reffered_id
-                print('sssss',reffered_id)
                 reffered_usssser = CustomUser.objects.get(referal_id=reffered_id)
                 reffered_user = Wallet.objects.filter(user=reffered_usssser).order_by("-id").first()
 
@@ -157,7 +155,6 @@ def otp_verification(request):
 
             user.save()
 
-            print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
             messages.success(request, 'user created successfully')
             return redirect('home')
         

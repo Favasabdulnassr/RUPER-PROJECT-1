@@ -9,6 +9,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import user_passes_test
 from order.models import OrdersItem
 from django.http import JsonResponse
+from .models import Banner
 
 
 
@@ -347,21 +348,40 @@ def orders(request):
 def order_details(request,id):
     order= OrdersItem.objects.filter(id=id).first()
     if request.method == 'POST':
-         option = request.POST.get('options')
+         option = request.POST.get('options')   
          if option:
             order.status = option
             order.save()
+            if order.status 
     statuses=['Order confirmed','Cancelled','Delivered']
     return render(request,'adminside/order_details.html',{'order':order, 'statuses':statuses})
 
 
 
     
-# @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-# @user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
-# def add_product_offers(request):
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
+def banners(request):
+    banners = Banner.objects.all().order_by("id")
+    return render(request,'adminside/banner.html',{'banners':banners})
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
+def add_banner(request):
+    banner_image = request.FILES.get('banner_image')
+    if request.method == 'POST':
+        images = Banner(banner_image=banner_image)
+        images.save()
+        return redirect(banners)
+    return render(request,'adminside/add_banner.html')    
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
+def delete_banner(request,id):
+    item = Banner.objects.get(id=id)
+    print(item)
+    item.delete()
+    return redirect('banners')
     
-
-
-
-

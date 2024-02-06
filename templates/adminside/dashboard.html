@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="mb-3">Select Sales Report</h4>
+                        <h4 class="mb-3">Sales  : Yearly /Weekly /Today</h4>
                         <div class="btn-group" role="group" aria-label="Sales Report Period">
                             <a href="../../dashboard?period=today" class="btn btn-success mr-2">Today</a>
                             <a href="../../dashboard?period=this_week" class="btn btn-success mr-2">This week</a>
@@ -100,7 +100,65 @@
             <div class="col-12 bg-dark mb-3">
                 <!-- Content of the full-width bar goes here -->
             </div>
+       
         </div>
+        <div class="row">
+            <div class="col-12 bg-dark mb-3">
+                <!-- Content of the full-width bar goes here -->
+            </div>
+       
+        </div>
+     
+        <h2> Sale Report </h2>
+
+        <table class="table datatable">
+            <thead>
+              <div class="container">
+                    <div class="row">
+                      <form action="" method="GET">
+                    <div class="button-container">
+                        <a class="btn btn-primary btn-responsive" href="{% url "pdf_download" %}?start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">Download As PDF</a>
+                        <a class="btn btn-success btn-responsive" href="{% url "download_exel" %}?start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">Download As EXEL</a>
+                    </div> 
+                        <div class="d-flex gap-2">
+                          {% csrf_token %}
+                          <div class="col-md-5">
+                              <label for="start-date">Start Date:</label>
+                              <input type="date" id="start-date" name="start_date" class="form-control">
+                          </div>
+                          <div class="col-md-5">
+                            <label for="end-date">End Date:</label>
+                            <input type="date" id="end-date" name="end_date" class="form-control">
+                          </div>
+                          <button type="submit" class="btn btn-primary mt-4 col-md-2 ">Submit</button>
+                        </div>
+                        <br>
+                      </div>
+                    </form>
+                  </div>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">DATE</th>
+                      <th scope="col">ORDER ID</th>
+                      <th scope="col">USER</th>
+                      <th scope="col">PRODUCT</th>
+                      <th scope="col">TOTAL PRICE</th>
+                      <th scope="col">PAYMENT</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in items %}
+                    <tr>
+                      <th scope="row">{{pro.id}}</th>
+                      <td>{{item.updated_time.date}}</td>
+                      <td>{{item.order.order_id}}</td>
+                      <td>{{item.order.user}}</td>
+                      <td>{{item.product.products_name}} <span class="text-danger"> x </span> {{item.quantity}} </td>
+                      <td>$ {{item.order.total_purchase_amount}}</td> 
+                      <td><spann class="text-uppercase"> {{item.order.payment_method}}</span></td> 
+                    </tr>
+                    {% endfor %} 
+                </table>
         <!-- Sales Graph -->
        
     </div>
