@@ -352,7 +352,6 @@ def order_details(request,id):
          if option:
             order.status = option
             order.save()
-            if order.status 
     statuses=['Order confirmed','Cancelled','Delivered']
     return render(request,'adminside/order_details.html',{'order':order, 'statuses':statuses})
 
