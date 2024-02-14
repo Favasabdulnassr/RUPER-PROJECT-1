@@ -122,15 +122,12 @@ def delete_images(request):
     if request.method == 'POST':
         image_ids = request.POST.getlist("image_ids[]")
 
-        print(image_ids) 
         try:
             image_ids = list(map(int, image_ids))  # Convert strings to integers
-            for image_id in image_ids:
-                 print(type(image_id))
+           
 
             # Delete images based on the received IDs
             images_to_delete = Image.objects.filter(pk__in=image_ids)
-            print(images_to_delete)
             for image in images_to_delete:
                 image.delete()
 
@@ -380,7 +377,6 @@ def add_banner(request):
 @user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def delete_banner(request,id):
     item = Banner.objects.get(id=id)
-    print(item)
     item.delete()
     return redirect('banners')
     

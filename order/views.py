@@ -20,7 +20,6 @@ from wallet.models  import Wallet
 def order_successfull(request):
     if request.user.is_authenticated:
         order_id = request.session['order_id']
-        print('ssssssssss',order_id)
         current_order = Orders.objects.get(order_id=order_id)
         return render(request,'userside/order_successfull.html',{'orders': current_order})
     
@@ -102,7 +101,6 @@ def placer_order(request):
                             coupon_used = CouponUsage.objects.filter(user=user,coupon=coupon_check).first()
                             coupon_used.ordered = 1
                             coupon_used.save()
-                            print(coupon_used.ordered)
                         else: 
                             total_amount = sum(cart_item.product.price*cart_item.quantity for cart_item in cart_items)
 
@@ -172,7 +170,6 @@ def placer_order(request):
                         return JsonResponse(respone_data)
 
                 except Exception as e:
-                    print(f"error while placing the order: {e}") 
                     response_data = {
                         'success' : False,
                         'message' : 'errore while placing the order'

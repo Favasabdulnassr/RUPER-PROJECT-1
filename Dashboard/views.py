@@ -48,7 +48,6 @@ def Dashboard(request):
 
     # Filter orders based on the selected period
     orders = Orders.objects.filter(order_date__range=[start_date, end_date])
-    print(orders)
 
     revenue = orders.aggregate(total_revenue=Sum('total_purchase_amount'))['total_revenue'] or 0
     total_profit = revenue * 0.3
@@ -170,7 +169,6 @@ class DownloadPDF(View):
                 start_date = datetime.datetime.now() - timedelta(days=3 * 365)
             if end_date == "":
                 end_date = datetime.datetime.now()
-                print(end_date)
 
             orders = Orders.objects.all().order_by("-order_date").filter(order_date__range=[start_date, end_date])
 

@@ -23,7 +23,7 @@ class Products(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField()
     brand_id = models.ForeignKey(Brands,on_delete=models.CASCADE)
-    is_listed = models.BooleanField(default=False)
+    is_listed = models.BooleanField(default=True)
     product_offer = models.PositiveIntegerField(default = 0)
 
 

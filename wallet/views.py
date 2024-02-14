@@ -36,11 +36,8 @@ def add_to_wallet(request):
 
 def update_wallet(request):
     email = request.user.email
-    print(email)
     amount = request.session["amount"]
-    print(amount)
     user_name = CustomUser.objects.get(email=email)
-    print(user_name)
     user = Wallet.objects.filter(user=user_name).order_by("-id").first()
     if user:
         balance = user.balance

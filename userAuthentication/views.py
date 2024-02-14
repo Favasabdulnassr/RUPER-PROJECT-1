@@ -27,16 +27,13 @@ def login(request):
         user = authenticate(request, username=email, password=password)
         if user is not None and user.is_listed == True:
             auth_login(request,user)
-            print('em')
             return redirect('home')
         
         else:
             messages.error(request, "invalid password or username") 
-            print('password error')
             return redirect('home')
           
     else:
-        print(' error')
         return render(request, "userside/home.html")   
                
 
@@ -71,7 +68,6 @@ def signup(request):
         request.session['recipient_email'] = email
         refferal_id = request.POST.get('referral_id')
         reffered_user = None
-        print(refferal_id)
         if refferal_id:
             reffered_user = CustomUser.objects.filter(referal_id=refferal_id).first()
             if reffered_user is None:
@@ -84,7 +80,6 @@ def signup(request):
         
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "email is already exists")
-            print('email error')
             return render(request,'userside/signup.html',{'messages': messages.get_messages(request)})
         
         elif CustomUser.objects.filter(phone_number=phone_number).exists():

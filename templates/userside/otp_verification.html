@@ -40,8 +40,9 @@
                 <div class="form-group">
                   <label for="otpInput">OTP</label>
                   <input type="text" class="form-control" id="otpInput" placeholder="Enter OTP" name="entered_otp" required>
-                  <center><div class="text-danger">{% if messages %}{% for message in messages  %} {{message}} {% endfor %}{% endif %}</div></center>
                 <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                <center><div class="text-danger">{% if messages %}{% for message in messages  %} {{message}} {% endfor %}{% endif %}</div></center>
+
               </form>
 
               <div class="timeforotp d-flex justify-content-center">
@@ -67,7 +68,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var expirationTime = new Date("{{ expiration_time }}").getTime();
-    let remainingtime = $("#timer");
+    let remainingtime = $("#countdown-timer");
     let resend = $("#resendlink");
     function UpdateOTPTimer() {
         var now = new Date().getTime(); 

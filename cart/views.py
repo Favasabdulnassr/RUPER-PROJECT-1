@@ -15,7 +15,6 @@ def add_cart(request):
     if request.method == 'POST':
         quantity = request.POST.get('quantity', 1)
         id = request.POST.get("id") 
-        print(id)
         product = Products.objects.get(id = id)
 
         
@@ -85,9 +84,7 @@ def update_cart(request):
             cart.save()     
             cart_items = Cart.objects.filter(customuser=userr)
             total = sum(cart_items.values_list('cart_price',flat=True))
-            print(total)
-            print(prodTotal)
-            print(total)
+           
 
             responsData = {
                 'updatedQuantity':cart.quantity,
@@ -95,7 +92,6 @@ def update_cart(request):
                 'totalCartPrice':total
             }
             return JsonResponse(responsData)
-        print("Not enterred")
 
     return HttpResponse(status=200)
 
@@ -170,19 +166,15 @@ def add_address(request):
         messages.info(request,'Address created successfully')
         return redirect('checkout')
     
-    return render(request,'userprofile/addAddress.html')
+    return render(request,'userprofile/addaddress.html')
 
 def apply_coupon(request):
     if request.method == 'POST':
         email = request.user.email
-        print(email,'sssssssssssssssssssssss')
         user = CustomUser.objects.get(email=email)
-        print(user,'aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
         coupon_code = request.POST.get('couponCode')
-        print(coupon_code)
         coupon_check = Coupons.objects.filter(code=coupon_code ,is_active=True).first()
-        print(coupon_check)
         if coupon_check:
             if CouponUsage.objects.filter(user=user,coupon=coupon_check).exists():
                 return JsonResponse({"error": "Coupon already applied"})
