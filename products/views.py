@@ -20,7 +20,7 @@ def product_offers(request):
 @user_passes_test(lambda u: u.is_superuser, login_url="adminlogin")
 def add_product_offers(request):
     products = Products.objects.all().order_by("id")
-    print(products)
+    
 
     if request.method == "POST":
         product_name = request.POST.get("product")

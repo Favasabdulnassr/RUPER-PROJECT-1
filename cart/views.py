@@ -150,7 +150,7 @@ def edit_address(request,id):
         
 
     user_address = Address.objects.filter(id=id).first()
-    return render(request,'userprofile/editAddress.html',{'user_data':user_address})
+    return render(request,'userside/editAddress.html',{'user_data':user_address})
 
 
 def add_address(request):
@@ -166,7 +166,7 @@ def add_address(request):
         messages.info(request,'Address created successfully')
         return redirect('checkout')
     
-    return render(request,'userprofile/addaddress.html')
+    return render(request,'userside/addAddress.html')
 
 def apply_coupon(request):
     if request.method == 'POST':
