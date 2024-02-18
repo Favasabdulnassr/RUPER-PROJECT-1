@@ -4,7 +4,7 @@ from userprofile.models import Address
 import uuid
 from products.models import Products
 
-# Create your models here.
+# Create your models here
 
 class Orders(models.Model):
     order_id = models.CharField(max_length=8,primary_key=True,unique=True,editable=False)
