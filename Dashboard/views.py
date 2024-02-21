@@ -139,7 +139,7 @@ def excel_report(request):
         for col_num in range(len(order)):
             work_s.write(row_num, col_num, str(order[col_num]), font_style)
 
-        total_price += order[6]  # Add the price of each order to the total
+        total_price += order[8]  # Add the price of each order to the total
         
 
     # Write the total price in the last row

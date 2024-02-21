@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.views.decorators.cache import cache_control
 from django.contrib.auth.decorators import user_passes_test
 from products.models import Products    
+from django.contrib import messages
 
 # Create your views here.
 
@@ -21,10 +22,20 @@ def product_offers(request):
 def add_product_offers(request):
     products = Products.objects.all().order_by("id")
     
-
     if request.method == "POST":
+        
         product_name = request.POST.get("product")
+
+        if not product_name:
+            messages.error(request,"please select a product")
+            return render(request, 'adminside/add_product_offers.html', {"products": products})
+
         product_discount = request.POST.get("discount")
+
+        if int(product_discount) > 99 or int(product_discount) == 0:
+            messages.error(request,"dicount percentage should be between 1 and 100")
+            return render(request, 'adminside/add_product_offers.html', {"products": products})
+
      
         product = Products.objects.get(id=product_name)
         product.product_offer = product_discount
@@ -42,6 +53,10 @@ def edit_product_offer(request,id):
 
     if request.method == "POST":
         product_discount = request.POST.get("discount")
+        
+        if int(product_discount) > 99 or int(product_discount) == 0:
+            messages.error(request,"dicount percentage should be between 1 and 100")
+            return render(request, 'adminside/edit_product_offers.html', {"products": products})
 
         item.product_offer = product_discount
         item.save()

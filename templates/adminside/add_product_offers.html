@@ -51,7 +51,7 @@
               {% if messages %}
             <div class="messages">
                 {% for message in messages %}
-                <div class="text {% if message.tags == 'info' %}text-success{% else %}text-danger{% endif %}">
+                <div class="text-danger">
                     {{ message }}
                 </div>
                 {% endfor %}
@@ -88,3 +88,46 @@
 </script>
 
 {% endblock content %}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $("#productForm").validate({
+      rules: {
+        product: {
+          required: true,
+        },
+        discount: {
+          required: true,
+          range: [1, 99],
+        },
+      },
+      messages: {
+        product: {
+          required: "Please select a product",
+        },
+        discount: {
+          required: "Please enter the discount percentage",
+          range: "Discount percentage must be between 1 and 99",
+        },
+      },
+      errorClass: "is-invalid",
+      errorPlacement: function(error, element) {
+        error.addClass("invalid-feedback");
+        if (element.attr("name") == "product") {
+          // Place the error message after the select element
+          error.insertAfter(element.parent());
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      submitHandler: function(form) {
+        // Your custom submit logic here
+        form.submit();
+      }
+    });
+  });
+</script>
