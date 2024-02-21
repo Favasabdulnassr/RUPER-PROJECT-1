@@ -41,7 +41,7 @@
         var errorField = document.getElementById("brandError");
 
         // Regular expression to match only letters and ensure length >= 3
-        var regex = /^[a-zA-Z]{4,}$/;
+        var regex = /^[a-zA-Z]{4,50}$/;
 
         if (!regex.test(brandName.trim())) {
             errorField.textContent = "Brand name should contain only letters and be at least four characters long.";
