@@ -19,7 +19,7 @@ def wallet(request):
     
     return render(request,'userside/wallet.html',context)
 
-client = razorpay.Client(auth=("rzp_test_LWQdkfQTzRGUBJ","jXE2IxqDvYVgxJGCbPJM3k71"))
+client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
 
 def add_to_wallet(request):
