@@ -157,14 +157,14 @@
             data: { id: id },
         }).done((data) => {
             if (data.success){
-                alert("success")
+                showToast(data.message || "Item added to cart successfully.", "success");
             }
             else{
-                alert("Already in Cart or stock is not available")
+                showToast(data.message || "Already in Cart or stock is not available", "error");
             }
             
         }).fail(() => {
-            alert('Those who login can only buy the product');
+            showToast('Those who login can only buy the product', "error");
         });
     }
 </script>

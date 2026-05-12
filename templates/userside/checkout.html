@@ -263,7 +263,7 @@
           var cartIsEmpty =  {% if cart_items %}false{% else %}true{% endif %};
 
           if (cartIsEmpty) {
-            alert("Your cart is empty. Please add items to your cart before placing an order.");
+            showToast("Your cart is empty. Please add items to your cart before placing an order.", "warning");
             return;   
           }
             
@@ -309,8 +309,8 @@
                                             window.location.href = '/order_success/';
                                         
                                         } 
-                                        else{
-                                        alert(" stock is not available")
+                                    else{
+                                        showToast("Stock is not available", "error");
                                     }
                                     }
                                 });
@@ -357,7 +357,7 @@
                         
                     } 
                     else{
-                        alert(" stock is not available")
+                        showToast("Stock is not available", "error");
                     }
                 }
             });
@@ -385,7 +385,7 @@
                             
                         } 
                         else{
-                            alert(" stock is not available or not enough money in wallet")
+                            showToast("Stock is not available or not enough money in wallet", "error");
                         }
                     }
                 });

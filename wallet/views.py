@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.conf import settings
 from userAuthentication.models import CustomUser
 from .models import Wallet
 import razorpay

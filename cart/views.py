@@ -17,7 +17,8 @@ def add_cart(request):
         id = request.POST.get("id") 
         product = Products.objects.get(id = id)
 
-        
+        if not request.user.is_authenticated:
+            return JsonResponse({'success': False, 'message': 'Please login to add items to your cart.'})
         if product.stock >= quantity:
             if Cart.objects.filter(customuser=request.user, product=product).exists():
                 return JsonResponse({'success': False})  

@@ -14,30 +14,36 @@ def Home(request):
     product = Products.objects.all().order_by("pk")
     banner = Banner.objects.all().order_by("pk")
 
-    first_product = product[0]
-    first_product_image = first_product.image_set.all()
-    first_image =  first_product_image[0]
+    # Safe defaults
+    first_image = second_image = third_image = None
 
-    second_product = product[1]
-    second_product_image = second_product.image_set.all()
-    second_image = second_product_image[0]
+    # Handle First Product
+    if product.count() > 0:
+        p1 = product[0]
+        img1 = p1.image_set.all().first()
+        first_image = img1
 
-    third_product = product[2]
-    third_product_image = third_product.image_set.all()
-    third_image = third_product_image[0]
+    # Handle Second Product
+    if product.count() > 1:
+        p2 = product[1]
+        img2 = p2.image_set.all().first()
+        second_image = img2
+
+    # Handle Third Product
+    if product.count() > 2:
+        p3 = product[2]
+        img3 = p3.image_set.all().first()
+        third_image = img3
 
     all_images = Image.objects.filter(product_id__in=product).order_by("-id")
 
-
-
-    return render(request,'userside/home.html',{
+    return render(request, 'userside/home.html', {
         'products': product,
-        'first_image':first_image,
-        'second_image':second_image,
-        'all_images' : all_images,
-        'banner':banner,
-        'third_image':third_image,
-       
+        'first_image': first_image,
+        'second_image': second_image,
+        'third_image': third_image,
+        'all_images': all_images,
+        'banner': banner,
     })
 
 def search(request):

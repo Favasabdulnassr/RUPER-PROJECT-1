@@ -68,15 +68,6 @@
 																	<input type="submit" class="button" id="registerButton" name="register" value="Register">	
 																</div>
 															</form>
-															  {% if messages %}
-                                                              	  <div class="messages">
-                                                                      {% for message in messages %}
-                                                                          <div class="text {% if message.tags == 'success' %}text-success{% else %}text-danger{% endif %}">
-                                                                           {{ message }}
-                                                                          </div>
-                                                                      {% endfor %}
-                                                                  </div>
-                                                              {% endif %}
 
 														</div>
 													</div>
@@ -106,7 +97,6 @@
 
 	
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'libs/popper/js/popper.min.js' %}"></script>
 <script src="{% static 'libs/jquery/js/jquery.min.js' %}"></script>
 <script src="{% static 'libs/bootstrap/js/bootstrap.min.js' %}"></script>
@@ -122,25 +112,27 @@
 <script src="{% static 'js/app.js' %}"></script>	 
 <script>
 	$(document).ready(function() {
-		$('.register1').submit(function(e) {
+		$('.register1').on('submit', function(e) {
+			// Reset all previous errors
 			$('.error').html('');
 			$('.input-text').removeClass('error-input');
-	
-			var first_name = $('input[name="first_name"]').val();
-			var email = $('input[name="email1"]').val();
-			var phone = $('input[name="phone1"]').val();
+			
+			var first_name = $('input[name="first_name"]').val().trim();
+			var email = $('input[name="email1"]').val().trim();
+			var phone = $('input[name="phone1"]').val().trim();
 			var password = $('input[name="password1"]').val();
 			var confirm_password = $('input[name="confirm_password1"]').val();
 	
-			var usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
+			// Updated regex: allow spaces in names, at least 2 chars
+			var nameRegex = /^[a-zA-Z\s]{2,50}$/;
 			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 			var phoneRegex = /^\d{10}$/;
-			var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least one letter and one number, minimum 8 characters
+			var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; 
 	
 			var errorsFound = false;
 	
-			if (!usernameRegex.test(first_name)) {
-				$('.first_name-error').html('Invalid first name format.');
+			if (!nameRegex.test(first_name)) {
+				$('.first_name-error').html('Please enter a valid name (letters and spaces only, min 2 chars).');
 				$('input[name="first_name"]').addClass('error-input');
 				errorsFound = true;
 			}
@@ -152,13 +144,13 @@
 			}
 	
 			if (!phoneRegex.test(phone)) {
-				$('.phone-error').html('Invalid phone number.');
+				$('.phone-error').html('Invalid phone number (must be 10 digits).');
 				$('input[name="phone1"]').addClass('error-input');
 				errorsFound = true;
 			}
 	
 			if (!passwordRegex.test(password)) {
-				$('.password-error').html('Password should be at least 8 characters and contain at least one letter and one number.');
+				$('.password-error').html('Password must be at least 8 characters with at least one letter and one number.');
 				$('input[name="password1"]').addClass('error-input');
 				errorsFound = true;
 			}
@@ -169,16 +161,15 @@
 				errorsFound = true;
 			}
 	
-			// Check if any errors exist
 			if (errorsFound) {
-				// If errors exist, prevent form submission
 				e.preventDefault();
+				showToast("Please correct the errors in the form.", "error");
+			} else {
+				// Optional: Disable button to prevent double submission
+				$('#registerButton').val('Processing...').attr('disabled', true);
 			}
-			// Form will automatically submit if there are no errors
 		});
 	});
-	
-	
 </script>
 </body>
 

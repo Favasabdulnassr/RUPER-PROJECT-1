@@ -39,6 +39,55 @@
 			.error{
 				color:red !important;
 			}
+			/* Custom Toast Messages */
+			#message-container {
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				z-index: 9999;
+				width: 320px;
+			}
+			.custom-toast {
+				background: rgba(255, 255, 255, 0.95);
+				backdrop-filter: blur(10px);
+				border-radius: 8px;
+				padding: 16px 20px;
+				margin-bottom: 12px;
+				box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+				border-left: 5px solid #333;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				animation: slideIn 0.5s ease forwards;
+				transition: all 0.3s ease;
+			}
+			.custom-toast.success { border-left-color: #28a745; }
+			.custom-toast.error { border-left-color: #dc3545; }
+			.custom-toast.warning { border-left-color: #ffc107; }
+			.custom-toast.info { border-left-color: #17a2b8; }
+			
+			.toast-content {
+				color: #333;
+				font-size: 14px;
+				font-weight: 500;
+				margin-right: 10px;
+			}
+			.toast-close {
+				cursor: pointer;
+				color: #999;
+				font-size: 18px;
+				line-height: 1;
+			}
+			.toast-close:hover { color: #333; }
+
+			@keyframes slideIn {
+				from { transform: translateX(100%); opacity: 0; }
+				to { transform: translateX(0); opacity: 1; }
+			}
+			@keyframes fadeOut {
+				from { transform: translateX(0); opacity: 1; }
+				to { transform: translateX(100%); opacity: 0; }
+			}
 		</style>
 
 		{% block style %}
@@ -51,6 +100,18 @@
 
 
 	<body class="home">
+		<!-- Global Message Container -->
+		<div id="message-container">
+			{% if messages %}
+				{% for message in messages %}
+					<div class="custom-toast {{ message.tags }}">
+						<div class="toast-content">{{ message }}</div>
+						<div class="toast-close" onclick="this.parentElement.style.animation='fadeOut 0.5s ease forwards'; setTimeout(() => this.parentElement.remove(), 500);">&times;</div>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+
 		<div id="page" class="hfeed page-wrapper">
 			<header id="site-header" class="site-header header-v1 absolute" >
 				<div class="header-mobile">
@@ -718,6 +779,40 @@
         
             <!-- Site Scripts -->
         <script src="{% static 'js/app.js' %}"></script>
+		<script>
+			// Function to create and show a toast from JavaScript
+			function showToast(message, tags) {
+				const container = document.getElementById('message-container');
+				const toast = document.createElement('div');
+				toast.className = `custom-toast ${tags}`;
+				toast.innerHTML = `
+					<div class="toast-content">${message}</div>
+					<div class="toast-close" onclick="this.parentElement.style.animation='fadeOut 0.5s ease forwards'; setTimeout(() => this.parentElement.remove(), 500);">&times;</div>
+				`;
+				container.appendChild(toast);
+
+				// Auto-hide after 5 seconds
+				setTimeout(() => {
+					if(toast && toast.parentElement) {
+						toast.style.animation = 'fadeOut 0.5s ease forwards';
+						setTimeout(() => toast.remove(), 500);
+					}
+				}, 5000);
+			}
+
+			// Auto-hide existing messages (from Django) after 5 seconds
+			document.addEventListener('DOMContentLoaded', function() {
+				const toasts = document.querySelectorAll('.custom-toast');
+				toasts.forEach(toast => {
+					setTimeout(() => {
+						if(toast && toast.parentElement) {
+							toast.style.animation = 'fadeOut 0.5s ease forwards';
+							setTimeout(() => toast.remove(), 500);
+						}
+					}, 5000);
+				});
+			});
+		</script>
 	</body>
 
 <!-- Mirrored from caketheme.com/html/ruper/blog-details-left.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2023 09:39:08 GMT -->

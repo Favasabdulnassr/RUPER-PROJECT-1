@@ -24,6 +24,52 @@
 	.form-group {
 	  margin-bottom: 50px; /* Adjust this value as needed */
 	}
+
+	/* Custom Toast Messages */
+	#message-container {
+		position: fixed;
+		top: 20px;
+		right: 20px;
+		z-index: 9999;
+		width: 320px;
+	}
+	.custom-toast {
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(10px);
+		border-radius: 8px;
+		padding: 16px 20px;
+		margin-bottom: 12px;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+		border-left: 5px solid #333;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		animation: slideIn 0.5s ease forwards;
+		transition: all 0.3s ease;
+	}
+	.custom-toast.success, .custom-toast.success_tag { border-left-color: #28a745; }
+	.custom-toast.error, .custom-toast.danger, .custom-toast.error_tag { border-left-color: #dc3545; }
+	
+	.toast-content {
+		color: #333;
+		font-size: 14px;
+		font-weight: 500;
+		margin-right: 10px;
+	}
+	.toast-close {
+		cursor: pointer;
+		color: #999;
+		font-size: 18px;
+		line-height: 1;
+	}
+	@keyframes slideIn {
+		from { transform: translateX(100%); opacity: 0; }
+		to { transform: translateX(0); opacity: 1; }
+	}
+	@keyframes fadeOut {
+		from { transform: translateX(0); opacity: 1; }
+		to { transform: translateX(100%); opacity: 0; }
+	}
   </style>
   
 </head>
@@ -41,7 +87,19 @@
                   <label for="otpInput">OTP</label>
                   <input type="text" class="form-control" id="otpInput" placeholder="Enter OTP" name="entered_otp" required>
                 <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                <center><div class="text-danger">{% if messages %}{% for message in messages  %} {{message}} {% endfor %}{% endif %}</div></center>
+              </form>
+
+              <!-- Global Message Container -->
+              <div id="message-container">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="custom-toast {{ message.tags }}">
+                            <div class="toast-content">{{ message }}</div>
+                            <div class="toast-close" onclick="this.parentElement.style.animation='fadeOut 0.5s ease forwards'; setTimeout(() => this.parentElement.remove(), 500);">&times;</div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+              </div>
 
               </form>
 
@@ -108,3 +166,4 @@
     });
 
 </script>
+<script>document.addEventListener('DOMContentLoaded', function() { const toasts = document.querySelectorAll('.custom-toast'); toasts.forEach(toast => { setTimeout(() => { if(toast) { toast.style.animation = 'fadeOut 0.5s ease forwards'; setTimeout(() => toast.remove(), 500); } }, 5000); }); });</script>

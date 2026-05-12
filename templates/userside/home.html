@@ -21,46 +21,55 @@
 						<div id="content" class="site-content" role="main">
 							<section class="section">
 								<!-- Block Sliders -->
-								
-																
 								<div class="block block-sliders">
 									<div class="slick-sliders" data-autoplay="true" data-dots="true" data-nav="false" data-columns4="1" data-columns3="1" data-columns2="1" data-columns1="1" data-columns1440="1" data-columns="1">
-										<div class="item slick-slide">
-											<div class="item-content">
-												{% for ban in banner %}
-												<div class="content-image">
-													<img width="1920" height="1080" src="{{ban.banner_image.url}}" alt="Image Slider">
-												</div>
-												{% endfor %}
-
-												<div class="section-padding">
-													<div class="section-container">
-														<div class="item-info horizontal-start vertical-middle">
-															<div class="content">
-																<div class="subtitle-slider">OFFERS BASED ON PRODUCT</div>
-																<h2 class="title-slider">Furniture</h2>
-																<div class="description-slider">Save up to 50% offer price </div>
-																<a class="button-slider button-white" href="{% url 'shop' %}">SHOP NOW</a>
+										{% if banner %}
+											{% for ban in banner %}
+											<div class="item slick-slide">
+												<div class="item-content">
+													<div class="content-image">
+														<img width="1920" height="1080" src="{{ban.banner_image.url}}" alt="Image Slider">
+													</div>
+													<div class="section-padding">
+														<div class="section-container">
+															<div class="item-info horizontal-start vertical-middle">
+																<div class="content">
+																	<div class="subtitle-slider">OFFERS BASED ON PRODUCT</div>
+																	<h2 class="title-slider">Furniture</h2>
+																	<div class="description-slider">Save up to 50% offer price </div>
+																	<a class="button-slider button-white" href="{% url 'shop' %}">SHOP NOW</a>
+																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										
+											{% endfor %}
+										{% else %}
+											<div class="item slick-slide">
+												<div class="item-content">
+													<div class="content-image">
+														<img width="1920" height="1080" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=1920" alt="Placeholder Slider">
+													</div>
+													<div class="section-padding">
+														<div class="section-container">
+															<div class="item-info horizontal-start vertical-middle">
+																<div class="content">
+																	<div class="subtitle-slider">WELCOME TO RUPER</div>
+																	<h2 class="title-slider">Premium Living</h2>
+																	<div class="description-slider">Discover our exclusive furniture collection.</div>
+																	<a class="button-slider button-white" href="{% url 'shop' %}">SHOP NOW</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										{% endif %}
 									</div>
 								</div>
 							</section>
 
-							{% if messages %}
-								<div class="messages">
-								{% for message in messages %}
-									<div class="text {% if message.tags == 'success' %}text-success{% else %}text-danger{% endif %}">
-									{{ message }}
-									</div>
-								{% endfor %}
-								</div>
-								{% endif %}
 						
                           
 							<section class="section section-padding m-b-60">
@@ -76,7 +85,11 @@
 																<div class="banner-wrapper banners">
 																	<div class="banner-image">
 																		<a href="{% url 'shop' %}">
-																			<img width="571" height="622" src="{{ first_image.image.url }}"alt="Banner Image">
+																			{% if first_image %}
+																				<img width="571" height="622" src="{{ first_image.image.url }}" alt="Banner Image">
+																			{% else %}
+																				<img width="571" height="622" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&q=80&w=571" alt="Placeholder">
+																			{% endif %}
 																		</a>
 																	</div>
 															
@@ -104,7 +117,11 @@
 																<div class="banner-wrapper banners">
 																	<div class="banner-image">
 																		<a href="{% url 'shop' %}">
-																			<img width="571" height="622" src="{{ second_image.image.url }}"alt="Banner Image">
+																			{% if second_image %}
+																				<img width="571" height="622" src="{{ second_image.image.url }}" alt="Banner Image">
+																			{% else %}
+																				<img width="571" height="622" src="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&q=80&w=571" alt="Placeholder">
+																			{% endif %}
 																		</a>
 																	</div>
 															
@@ -215,7 +232,11 @@
 																<div class="banner-wrapper banners">
 																	<div class="banner-image">
 																		<a href="{% url 'shop' %}">
-																			<img width="571" height="475" src="{{third_image.image.url}}" alt="Banner Image">
+																			{% if third_image %}
+																				<img width="571" height="475" src="{{third_image.image.url}}" alt="Banner Image">
+																			{% else %}
+																				<img width="571" height="475" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=571" alt="Placeholder">
+																			{% endif %}
 																		</a>
 																	</div>
 																	<div class="banner-wrapper-infor">
